@@ -1,0 +1,23 @@
+1) Introduction:
+================
+	What is continuouse integration?
+So developers, when they are working on a prodect development , will code,
+build code,test it and push it to the centralized version control system.
+
+write the code, build & test locally , if everything is good, push it to the CVCS.
+
+
+MERGE THE CODE , NOT GET INTEGRATED--since the CI  comes. 
+
+Developers-> VCS - > Fetch -> Build -> Test -> Notify -> Developers
+
+
+2) Installing Tools in Jenkins:
+===============================
+
+
+
+
+
+3) First Job:
+=============
