@@ -14,10 +14,29 @@ Developers-> VCS - > Fetch -> Build -> Test -> Notify -> Developers
 
 2) Installing Tools in Jenkins:
 ===============================
-
+	In Maven we need to install jdk-8 and in jenkins we need to install jdk-11
+Before we start our job we need to make sure jdk-8 and maven in the jenkins.
+Manage-jenkins-> GloablTool-Configuration -> ehck jdk and maven path
 
 
 
 
 3) First Job:
 =============
+(1)Create a job -> New item -> Free style -OK
+(ii) Description: Maven Build Project 
+(iii) source code GIT: (https://github.com/vsknalli/devopshydclub.git)
+(iv) Branches to Build: vp-rem 
+(v) add build steps: execute shell (mvn install) or Invoke-toplevel-maven-targets."install"
+OK 
+
+
+
+
+
+
+
+
+
+
+
