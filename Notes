@@ -65,6 +65,32 @@ can not get it from jenkins work space , because its overwritten.
 
 So to preserve all artifacts , we can do versiong through executing some commands 
 
+We need to install some plugins for versioning,Targt directory in jenkins is valatile if someone run # mvn clean all the 
+artifact will be get deleted , for that reason we are doing this.
+New-item -> Name:Versioning-Builds--Free Style --> we  can copy from Free stype job (Previous Job) -> save -> Run the Job.
+
+For doing versioning--> copy the name "vprofile-v2.war".
+Go to versioning job -> configure -> In Build , after build we need to add one more build "Execute Shell"
+		" mkdir -p versions"
+	 	"cp target/vprofile-v2.war" versions/vprofile-v$BUILD_ID.war
+	$BUILD_ID -> we call this variable from jenkins default defined environment varaiables 
+Note: search in google "Jenkins environment variable" 
+	In the same versioning Job -> configure -> Select "This project is perameterized"
+	Select the  option "string perameter"
+	Name: VERSION ------> After selecting this perameter option  , while we run the job it will prompts for version number
+	Default Value:
+	Description: 
+In BUILD -> Exsecute Shell Windo
+                
+                " mkdir -p versions"
+              #  "cp target/vprofile-v2.war" versions/vprofile-V$BUILD_ID.war
+                "cp target/vprofile-v2.war" versions/vprofile-V$version.war      save and Run 
+ 
+Note: its not recomented , in AUtomation since which require human intervesion.
+
+Now the requirement is  i want to versioning the artifact along with Timestamp , bewlo are the setps:
+	We need to install some plugin to capture the timestamp 
+Manage Jenkins -> Manage Plugins -> Available -> 
 
 
 
