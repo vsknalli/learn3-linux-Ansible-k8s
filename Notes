@@ -80,7 +80,7 @@ Note: search in google "Jenkins environment variable"
 	Name: VERSION ------> After selecting this perameter option  , while we run the job it will prompts for version number
 	Default Value:
 	Description: 
-In BUILD -> Exsecute Shell Windo
+In BUILD -> Exsecute Shell Window
                 
                 " mkdir -p versions"
               #  "cp target/vprofile-v2.war" versions/vprofile-V$BUILD_ID.war
@@ -90,7 +90,18 @@ Note: its not recomented , in AUtomation since which require human intervesion.
 
 Now the requirement is  i want to versioning the artifact along with Timestamp , bewlo are the setps:
 	We need to install some plugin to capture the timestamp 
-Manage Jenkins -> Manage Plugins -> Available -> 
+Manage Jenkins -> Manage Plugins -> Available -> search  "Timestamp"--> select "BUILD_TIMESTAMP" or "ZenTimestamp"
+Go to JOB-> Configure -> Unselect "This project is perameterized" and enable "Change Date pattern for the BUIL_TIMESTAMP"
+								  give : Date and Time Pattern: yyyy/mm/DD/HHmmss
+In BUILD -> Excute shell window	
+
+ " mkdir -p versions"
+              #  "cp target/vprofile-v2.war" versions/vprofile-V$BUILD_ID.war
+              #  "cp target/vprofile-v2.war" versions/vprofile-V$version.war 
+     	          cp target/vprofile-v2.war" versions/vprofile-V$BUILD_TIMESTAMP-$BUILD_ID.war
+
+
+
 
 
 
