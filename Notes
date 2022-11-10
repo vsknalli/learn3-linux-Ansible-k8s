@@ -28,7 +28,44 @@ Manage-jenkins-> GloablTool-Configuration -> ehck jdk and maven path
 (iii) source code GIT: (https://github.com/vsknalli/devopshydclub.git)
 (iv) Branches to Build: vp-rem 
 (v) add build steps: execute shell (mvn install) or Invoke-toplevel-maven-targets."install"
-OK 
+OK Now we will trigger manually Build 
+
+In order to save artifact in Home page need to some changes 
+
+configure -> post build action -> Archive_the_Artifact (**/*war) save Build it again 
+Now you can see the artifact in Home page.
+
+
+
+4) Tools in Jenkins:
+====================	
+	Already we have install two tools in jenkins , git tool and maven tool
+There is some difference between plugins and tools 
+ tools -> automation software DevOps tool written in the Java programming language.software which we installed in the system
+ plugin -> means of enhancing the functionality of a Jenkins environment
+
+example: jdk-8 is a tool and  a Java virtual machine JVM is a plugin like that.
+
+When we talk about tools , we can directly installed the tools in the jenkins server itselfand the other way is "jenkins provide interface to install tools"
+ManageJenkins-> Global Tool Configuration --> here we can install in jenkins via interface.
+
+where we can select the tool?
+	job -> configure -> Build -> select the maven version which you need for your job.
+With the help of Global tool Configuraion we can use many versions we need .
+
+
+
+5) Plugins-Versioning & more:
+=============================
+	In the workspace -> target directory -> we can see the artifact (.war file)
+Every time we run the job the artifact will be replaced with new artifact 
+
+Suppose if you want to roll back since have some small issue with the new artifact , we
+can not get it from jenkins work space , because its overwritten.
+
+So to preserve all artifacts , we can do versiong through executing some commands 
+
+
 
 
 
