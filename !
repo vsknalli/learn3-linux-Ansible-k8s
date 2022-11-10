@@ -104,53 +104,10 @@ In BUILD -> Excute shell window
 6) Plugins for CI 
 =================
  	We need to install the below plugins in jenkins 
-	1) Nexus Artifact uploader 
-	2) SonarQube Scanner
+	1) Nexus
+	2) SonarQube
 	3) Git
-	4) Pipeline Maven integration 
-	5) pileline utility Steps
-	6) Build Timestamp
-
-PipeLineAsACode: PAAC
-=====================
--------------------------------------------------------------------------------------------------
-pipeline{
-    agent any
-    tools{
-        maven "MAVEN-3.8.4"
-        jdk "Oraclejdk-8"
-    }
-
-    stages {
-        stage('Fetch Code') {
-            steps {
-                git branch: 'vp-rem' , url: 'https://github.com/vsknalli/devopshydclub.git'
-
-            }
-        }
-
-        stage('Build'){
-            steps{
-                sh 'mvn install -DskipTests'
-            }
-
-            post {
-                success {
-                    echo 'Now Archiving  it  ......'
-                    archiveArtifacts artifacts: '**/target/*.war'
-                }
-            }
-        }
-
-        stage('UNIT TEST') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-    }
-}
-
----------------------------------------------------------------------------------------------------------- 
+	4) 
 
 
 
