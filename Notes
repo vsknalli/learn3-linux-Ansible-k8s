@@ -151,6 +151,81 @@ pipeline{
 }
 
 ---------------------------------------------------------------------------------------------------------- 
+CODE ANALYSIS:
+==============
+FETCH CODE -> BUILD (MANVEN) -> UNIT TEST(MAVEN) -> CODE ANALYSIS(SONAR QUBE) -> UPLOAD ARTIFACT (NEXUS )
+
+	We already know how to featch the code , Build the code and Test the code . Next step is Code Analysis...!!!!
+Before we integrate code analysis, We need to understand what exactly is Code Analysis is .....!!!
+Code Analysis is one more kind of test that will be conducted on the code,So this is not software testing. This is code testing.
+
+Why code Analysis ?
+	* Best Practices:
+		When you write a kind of code,there are varies best practices that needs to be followed, For developers, it is 
+quite impossible to follow all the best practices , and different programming & different language may have different practice.
+So code analysis will check your code against the best practices and flag the prablems.whch can be fixed by developers.
+
+		Valunerabilities , unknowingly developers will create may valunerabilities in the code like top ten OWASP. IF 
+you dont know OWASP valunerabilites just google it "top ten OWASP Valunerabilities". These are the valunerabilities hackers 
+can exploit the application, the software. There are tools specilized in doing this , like OWASP tool.
+
+		Also code analysis can look for bugs and many other things which can be functional that may come later.
+The code may be working fine for now, but you may get some problem later. To improve code quality we wil do code analysis.
+
+There are many tools in the market to do code analysis:
+	"checkstyle", "cobertura", "mstest", "owasp" , "Sonaqube scanner",...etc...etc.In this course will use checkstyle and
+sonarQube.
+
+
+	WE NEED TO INTEGRATE SONAR QUBE SERVER WITH JENKINS
+
+For that first we need to install sonarqube scanner tool in the jenkins, integrae jenkins with sonar qube server with jenkins.
+
+Loginto the jenkins server -> Manage Jenkins -> global tool configuration -> SonarQube Scanner -> 
+Name: SONAR-4.4.2170
+Install automatically 
+
+Note -> Before install tool we need to install sonar qube plugin first and go tool configuration (then only it will show) 
+
+Now we need to integrate sonarquber server with jenkins For that 
+-> Configure system -> SonarQube-server -> 
+Name: Sonar
+Server URL : http://192.168.56.124
+Serve Authentication Tocken:   --> For tocken go to sonar server GUI -> user (Administrator) -> my account -> security  -> BelowGenerate tocken give name: jenkins (775fa9672c2dbd504fafdd8bfdac427da43f7f42) -> click generate and get the tocken and copy the tocken and save the configurtion 
+keep the tocken in StickyNotes 
+
+Dashboard-Manage jenkins-> Configure system -> sonar quber server -> authentication tocken  - select "jenkins" --> kind: secret text - paste the code (775fa9672c2dbd504fafdd8bfdac427da43f7f42) -> ID : Mysonartocken -> Description: mysonartocken-click add.
+
+DEMO:
+====
+	Open vsEditot -> copy the previouse code that we have written
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
 
 
 
