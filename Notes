@@ -196,7 +196,7 @@ keep the tocken in StickyNotes
 
 Dashboard-Manage jenkins-> Configure system -> sonar quber server -> authentication tocken  - select "jenkins" --> kind: secret text - paste the code (775fa9672c2dbd504fafdd8bfdac427da43f7f42) -> ID : Mysonartocken -> Description: mysonartocken-click add.
 
-DEMO:
+149-udemy-DEMO:
 ====
 	Open vsEditot -> copy the previouse code that we have written
 
@@ -287,10 +287,10 @@ pipeline{
         }
         stage('Sonar Analysis'){
             environment {
-                scannerHome = tool 'SONAR-4.4.2170'
+                scannerHome = tool 'sonar4.7'
             }
             steps {
-               withSonarQubeEnv('sonar') {
+               withSonarQubeEnv('sonar-vprofile') {
                    sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
                    -Dsonar.projectName=vprofile \
                    -Dsonar.projectVersion=1.0 \
@@ -304,37 +304,3 @@ pipeline{
         }
     }
 }    
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
