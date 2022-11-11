@@ -200,10 +200,110 @@ DEMO:
 ====
 	Open vsEditot -> copy the previouse code that we have written
 
+add one more stage in the pipeline code :
 
+--------------------------------------------------------------------------------------------------------
+pipeline{
+    agent any
+    tools{
+        maven "MAVEN-3.8.4"
+        jdk "Oraclejdk-8"
+    }
 
+    stages {
+        stage('Fetch Code') {
+            steps {
+                git branch: 'vp-rem' , url: 'https://github.com/vsknalli/devopshydclub.git'
 
+            }
+        }
 
+        stage('Build'){
+            steps{
+                sh 'mvn install -DskipTests'
+            }
+
+            post {
+                success {
+                    echo 'Now Archiving  it  ......'
+                    archiveArtifacts artifacts: '**/target/*.war'
+                }
+            }
+        }
+
+        stage('UNIT TEST') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Checkstyle Analysis'){
+            steps{
+                sh 'mvn checkstyle:checkstyle'
+            }
+        }
+    }
+}   
+--------------------------------------------------------------------------------------------------------
+Sonar Scanner - 2
+=================
+
+pipeline{
+    agent any
+    tools{
+        maven "MAVEN-3.8.4"
+        jdk "Oraclejdk-8"
+    }
+
+    stages {
+        stage('Fetch Code') {
+            steps {
+                git branch: 'vp-rem' , url: 'https://github.com/vsknalli/devopshydclub.git'
+
+            }
+        }
+
+        stage('Build'){
+            steps{
+                sh 'mvn install -DskipTests'
+            }
+
+            post {
+                success {
+                    echo 'Now Archiving  it  ......'
+                    archiveArtifacts artifacts: '**/target/*.war'
+                }
+            }
+        }
+
+        stage('UNIT TEST') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Checkstyle Analysis'){
+            steps{
+                sh 'mvn checkstyle:checkstyle'
+            }
+        }
+        stage('Sonar Analysis'){
+            environment {
+                scannerHome = tool 'SONAR-4.4.2170'
+            }
+            steps {
+               withSonarQubeEnv('sonar') {
+                   sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
+                   -Dsonar.projectName=vprofile \
+                   -Dsonar.projectVersion=1.0 \
+                   -Dsonar.sources=src/ \
+                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+                }
+            }
+        }
+    }
+}    
 
 
 
