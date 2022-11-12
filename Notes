@@ -1,306 +1,45 @@
 1) Introduction:
 ================
-	What is continuouse integration?
-So developers, when they are working on a prodect development , will code,
-build code,test it and push it to the centralized version control system.
+	What is cloud computing?
+On-demand delivery of IT resources over the internet with pay-as-you-go pricing 
+Elasticity:
+-----------
+	You can grow or shring your resources whenver you want and how much ever you need.
 
-write the code, build & test locally , if everything is good, push it to the CVCS.
+Cost Saving:
+------------
+	Grow and shring your resource as per your need, you also control over the cost.
 
+Types of cloud Computing:
+-------------------------
+	Infrastructure as a service (IaaS)
+	----------------------------------
+		Vitual machines with operating system is called Iaas , EC2 is an example
 
-MERGE THE CODE , NOT GET INTEGRATED--since the CI  comes. 
-
-Developers-> VCS - > Fetch -> Build -> Test -> Notify -> Developers
-
-
-2) Installing Tools in Jenkins:
-===============================
-	In Maven we need to install jdk-8 and in jenkins we need to install jdk-11
-Before we start our job we need to make sure jdk-8 and maven in the jenkins.
-Manage-jenkins-> GloablTool-Configuration -> ehck jdk and maven path
-
-
-
-
-3) First Job:
-=============
-(1)Create a job -> New item -> Free style -OK
-(ii) Description: Maven Build Project 
-(iii) source code GIT: (https://github.com/vsknalli/devopshydclub.git)
-(iv) Branches to Build: vp-rem 
-(v) add build steps: execute shell (mvn install) or Invoke-toplevel-maven-targets."install"
-OK Now we will trigger manually Build 
-
-In order to save artifact in Home page need to some changes 
-
-configure -> post build action -> Archive_the_Artifact (**/*war) save Build it again 
-Now you can see the artifact in Home page.
+	Platform as a service (PaaS)
+	----------------------------
+		Example if you want Oracle DB , you dont need to create virtual machine , just you can use AWS-RDS service and
+AWS will do everything for you to provision your Oracle Database, these type of service is called PaaS.
+		
+	Software as a service (SaaS)
+	----------------------------
+		Just subscribe and start using them ..much much easier..!!!..Google workspace is good example
 
 
 
-4) Tools in Jenkins:
-====================	
-	Already we have install two tools in jenkins , git tool and maven tool
-There is some difference between plugins and tools 
- tools -> automation software DevOps tool written in the Java programming language.software which we installed in the system
- plugin -> means of enhancing the functionality of a Jenkins environment
+AWS Regions & Zones
+====================
+	AWS has its presence in so many contries, Which is called Regions , With in the Region AWS have multiple zones (DC)
+One Zone is multiple Datacenter, In a Region we have minimum two zones and maximum i have seen six zones.
+We can make hight availability through Multiple availablity zones.
+We can make disastor recovery between two regins
+28 -> Regions
+90 -> Availabity zones
+200  -> AWS providing more then 200 services. As per Nov-2022
 
-example: jdk-8 is a tool and  a Java virtual machine JVM is a plugin like that.
-
-When we talk about tools , we can directly installed the tools in the jenkins server itselfand the other way is "jenkins provide interface to install tools"
-ManageJenkins-> Global Tool Configuration --> here we can install in jenkins via interface.
-
-where we can select the tool?
-	job -> configure -> Build -> select the maven version which you need for your job.
-With the help of Global tool Configuraion we can use many versions we need .
-
-
-
-5) Plugins-Versioning & more:
-=============================
-	In the workspace -> target directory -> we can see the artifact (.war file)
-Every time we run the job the artifact will be replaced with new artifact 
-
-Suppose if you want to roll back since have some small issue with the new artifact , we
-can not get it from jenkins work space , because its overwritten.
-
-So to preserve all artifacts , we can do versiong through executing some commands 
-
-We need to install some plugins for versioning,Targt directory in jenkins is valatile if someone run # mvn clean all the 
-artifact will be get deleted , for that reason we are doing this.
-New-item -> Name:Versioning-Builds--Free Style --> we  can copy from Free stype job (Previous Job) -> save -> Run the Job.
-
-For doing versioning--> copy the name "vprofile-v2.war".
-Go to versioning job -> configure -> In Build , after build we need to add one more build "Execute Shell"
-		" mkdir -p versions"
-	 	"cp target/vprofile-v2.war" versions/vprofile-v$BUILD_ID.war
-	$BUILD_ID -> we call this variable from jenkins default defined environment varaiables 
-Note: search in google "Jenkins environment variable" 
-	In the same versioning Job -> configure -> Select "This project is perameterized"
-	Select the  option "string perameter"
-	Name: VERSION ------> After selecting this perameter option  , while we run the job it will prompts for version number
-	Default Value:
-	Description: 
-In BUILD -> Exsecute Shell Window
-                
-                " mkdir -p versions"
-              #  "cp target/vprofile-v2.war" versions/vprofile-V$BUILD_ID.war
-                "cp target/vprofile-v2.war" versions/vprofile-V$version.war      save and Run 
- 
-Note: its not recomented , in AUtomation since which require human intervesion.
-
-Now the requirement is  i want to versioning the artifact along with Timestamp , bewlo are the setps:
-	We need to install some plugin to capture the timestamp 
-Manage Jenkins -> Manage Plugins -> Available -> search  "Timestamp"--> select "BUILD_TIMESTAMP" or "ZenTimestamp"
-Go to JOB-> Configure -> Unselect "This project is perameterized" and enable "Change Date pattern for the BUIL_TIMESTAMP"
-								  give : Date and Time Pattern: yyyy/mm/DD/HHmmss
-In BUILD -> Excute shell window	
-
- " mkdir -p versions"
-              #  "cp target/vprofile-v2.war" versions/vprofile-V$BUILD_ID.war
-              #  "cp target/vprofile-v2.war" versions/vprofile-V$version.war 
-     	          cp target/vprofile-v2.war" versions/vprofile-V$BUILD_TIMESTAMP-$BUILD_ID.war
-
-
-6) Plugins for CI 
-=================
- 	We need to install the below plugins in jenkins 
-	1) Nexus Artifact uploader 
-	2) SonarQube Scanner
-	3) Git
-	4) Pipeline Maven integration 
-	5) pileline utility Steps
-	6) Build Timestamp
-
-PipeLineAsACode: PAAC
-=====================
--------------------------------------------------------------------------------------------------
-pipeline{
-    agent any
-    tools{
-        maven "MAVEN-3.8.4"
-        jdk "Oraclejdk-8"
-    }
-
-    stages {
-        stage('Fetch Code') {
-            steps {
-                git branch: 'vp-rem' , url: 'https://github.com/vsknalli/devopshydclub.git'
-
-            }
-        }
-
-        stage('Build'){
-            steps{
-                sh 'mvn install -DskipTests'
-            }
-
-            post {
-                success {
-                    echo 'Now Archiving  it  ......'
-                    archiveArtifacts artifacts: '**/target/*.war'
-                }
-            }
-        }
-
-        stage('UNIT TEST') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-    }
-}
-
----------------------------------------------------------------------------------------------------------- 
-CODE ANALYSIS:
-==============
-FETCH CODE -> BUILD (MANVEN) -> UNIT TEST(MAVEN) -> CODE ANALYSIS(SONAR QUBE) -> UPLOAD ARTIFACT (NEXUS )
-
-	We already know how to featch the code , Build the code and Test the code . Next step is Code Analysis...!!!!
-Before we integrate code analysis, We need to understand what exactly is Code Analysis is .....!!!
-Code Analysis is one more kind of test that will be conducted on the code,So this is not software testing. This is code testing.
-
-Why code Analysis ?
-	* Best Practices:
-		When you write a kind of code,there are varies best practices that needs to be followed, For developers, it is 
-quite impossible to follow all the best practices , and different programming & different language may have different practice.
-So code analysis will check your code against the best practices and flag the prablems.whch can be fixed by developers.
-
-		Valunerabilities , unknowingly developers will create may valunerabilities in the code like top ten OWASP. IF 
-you dont know OWASP valunerabilites just google it "top ten OWASP Valunerabilities". These are the valunerabilities hackers 
-can exploit the application, the software. There are tools specilized in doing this , like OWASP tool.
-
-		Also code analysis can look for bugs and many other things which can be functional that may come later.
-The code may be working fine for now, but you may get some problem later. To improve code quality we wil do code analysis.
-
-There are many tools in the market to do code analysis:
-	"checkstyle", "cobertura", "mstest", "owasp" , "Sonaqube scanner",...etc...etc.In this course will use checkstyle and
-sonarQube.
-
-
-	WE NEED TO INTEGRATE SONAR QUBE SERVER WITH JENKINS
-
-For that first we need to install sonarqube scanner tool in the jenkins, integrae jenkins with sonar qube server with jenkins.
-
-Loginto the jenkins server -> Manage Jenkins -> global tool configuration -> SonarQube Scanner -> 
-Name: SONAR-4.4.2170
-Install automatically 
-
-Note -> Before install tool we need to install sonar qube plugin first and go tool configuration (then only it will show) 
-
-Now we need to integrate sonarquber server with jenkins For that 
--> Configure system -> SonarQube-server -> 
-Name: Sonar
-Server URL : http://192.168.56.124
-Serve Authentication Tocken:   --> For tocken go to sonar server GUI -> user (Administrator) -> my account -> security  -> BelowGenerate tocken give name: jenkins (775fa9672c2dbd504fafdd8bfdac427da43f7f42) -> click generate and get the tocken and copy the tocken and save the configurtion 
-keep the tocken in StickyNotes 
-
-Dashboard-Manage jenkins-> Configure system -> sonar quber server -> authentication tocken  - select "jenkins" --> kind: secret text - paste the code (775fa9672c2dbd504fafdd8bfdac427da43f7f42) -> ID : Mysonartocken -> Description: mysonartocken-click add.
-
-149-udemy-DEMO:
-====
-	Open vsEditot -> copy the previouse code that we have written
-
-add one more stage in the pipeline code :
-
---------------------------------------------------------------------------------------------------------
-pipeline{
-    agent any
-    tools{
-        maven "MAVEN-3.8.4"
-        jdk "Oraclejdk-8"
-    }
-
-    stages {
-        stage('Fetch Code') {
-            steps {
-                git branch: 'vp-rem' , url: 'https://github.com/vsknalli/devopshydclub.git'
-
-            }
-        }
-
-        stage('Build'){
-            steps{
-                sh 'mvn install -DskipTests'
-            }
-
-            post {
-                success {
-                    echo 'Now Archiving  it  ......'
-                    archiveArtifacts artifacts: '**/target/*.war'
-                }
-            }
-        }
-
-        stage('UNIT TEST') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-        stage('Checkstyle Analysis'){
-            steps{
-                sh 'mvn checkstyle:checkstyle'
-            }
-        }
-    }
-}   
---------------------------------------------------------------------------------------------------------
-Sonar Scanner - 2
-=================
-
-pipeline{
-    agent any
-    tools{
-        maven "MAVEN-3.8.4"
-        jdk "Oraclejdk-8"
-    }
-
-    stages {
-        stage('Fetch Code') {
-            steps {
-                git branch: 'vp-rem' , url: 'https://github.com/vsknalli/devopshydclub.git'
-
-            }
-        }
-
-        stage('Build'){
-            steps{
-                sh 'mvn install -DskipTests'
-            }
-
-            post {
-                success {
-                    echo 'Now Archiving  it  ......'
-                    archiveArtifacts artifacts: '**/target/*.war'
-                }
-            }
-        }
-
-        stage('UNIT TEST') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-        stage('Checkstyle Analysis'){
-            steps{
-                sh 'mvn checkstyle:checkstyle'
-            }
-        }
-        stage('Sonar Analysis'){
-            environment {
-                scannerHome = tool 'sonar4.7'
-            }
-            steps {
-               withSonarQubeEnv('sonar-vprofile') {
-                   sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
-                   -Dsonar.projectName=vprofile \
-                   -Dsonar.projectVersion=1.0 \
-                   -Dsonar.sources=src/ \
-                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
-                }
-            }
-        }
-    }
-}    
+Some very Known Services:
+------------------------
+	Amazon S3
+	EC2
+	Amazon EBS 
+	ECS
