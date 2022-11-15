@@ -14,5 +14,54 @@ become_ask_pass = False
 
 [ssh_connection]
 scp_if_ssh=True
---------------------------------------------------
+---------------------------------------------------------------------------------------------
+ANSIBLE MAN PAGE HELP
+======================
+# ansible-doc -l --> To list all modules available 
+# ansible-doc -l | grep ^win      --> to list all windows module
+# ansible-doc -l | grep -v ^win   --> To exculde windows module and show remaining modules
+# ansible-doc -l | grep -v ^win | grep ping --> show ping module
+# ansible-doc -l | grep -v ^win  | grep ^file --> strting with file it will list 
+# ansible-doc -l | grep ^file 
+# absible-doc -l | grep ^lvol  --> to configure lvm logical volume  
+
+kit and trail method
+
+# absible-doc -l | grep yum  
+# ansible-doc ping --> information about specific module with some examples
+# ansible-doc user  --> informatin about user module , like how to crete user with options
+------------------------------------------------------------------------------------------------
+Ansible ad-hoc command examples:
+---------------------------------
+To Do some action quickly and usally once we can go with ad-hoc for example to shutdown or restart remote hosts.
+
+# ansible node1 -m command -a "cat /etc/hosts"   
+# ansible node2 -m copy -a "src=/etc/hosts dest=/tmp/hosts_backup"
+# ansible node3 -m file -a "path=/tmp/test state=touch"
+# ansible node4 -m user -a "name=ansadmin state=present"
+# ansible node4 -m user -a "name=ansadmin state=present" --become
+# ansible node1 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
