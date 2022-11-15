@@ -1,45 +1,18 @@
-1) Introduction:
-================
-	What is cloud computing?
-On-demand delivery of IT resources over the internet with pay-as-you-go pricing 
-Elasticity:
------------
-	You can grow or shring your resources whenver you want and how much ever you need.
+Ansible configurtion file:
+===========================
+-------------------------------------------------
+[defaults]
+inventory = /home/ansadmin/inventory
+roles_path = /home/ansadmin/tasks/roles
+remote_user = ansadmin
 
-Cost Saving:
-------------
-	Grow and shring your resource as per your need, you also control over the cost.
+[privilege_escalation]
+become = yes
+become_user = root
+become_method = sudo 
+become_ask_pass = False
 
-Types of cloud Computing:
--------------------------
-	Infrastructure as a service (IaaS)
-	----------------------------------
-		Vitual machines with operating system is called Iaas , EC2 is an example
+[ssh_connection]
+scp_if_ssh=True
+--------------------------------------------------
 
-	Platform as a service (PaaS)
-	----------------------------
-		Example if you want Oracle DB , you dont need to create virtual machine , just you can use AWS-RDS service and
-AWS will do everything for you to provision your Oracle Database, these type of service is called PaaS.
-		
-	Software as a service (SaaS)
-	----------------------------
-		Just subscribe and start using them ..much much easier..!!!..Google workspace is good example
-
-
-
-AWS Regions & Zones
-====================
-	AWS has its presence in so many contries, Which is called Regions , With in the Region AWS have multiple zones (DC)
-One Zone is multiple Datacenter, In a Region we have minimum two zones and maximum i have seen six zones.
-We can make hight availability through Multiple availablity zones.
-We can make disastor recovery between two regins
-28 -> Regions
-90 -> Availabity zones
-200  -> AWS providing more then 200 services. As per Nov-2022
-
-Some very Known Services:
-------------------------
-	Amazon S3
-	EC2
-	Amazon EBS 
-	ECS
