@@ -103,6 +103,18 @@ Named List Variables:
               msg: "{{ list[0] }}"
      
 ...     
+------------------------------------
+Dictionary and List Variables:
+------------------------------
+lists from setup module only the dictionaries 
+
+ansible node1 -m setup | grep ansible_ | more
+
+ansible node1 -m setup | grep -a10 ansible_  --> 10 lines it will show after matches found
+
+
+
+
 
 
 
