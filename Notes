@@ -40,9 +40,10 @@ To Do some action quickly and usally once we can go with ad-hoc for example to s
 # ansible node3 -m file -a "path=/tmp/test state=touch"
 # ansible node4 -m user -a "name=ansadmin state=present"
 # ansible node4 -m user -a "name=ansadmin state=present" --become
-# ansible node1 
 
-
+Ansible Playbooks:
+==================
+	
 
 
 
