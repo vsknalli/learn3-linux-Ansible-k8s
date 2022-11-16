@@ -1,0 +1,13 @@
+---
+ - hosts: node2
+   vars:
+         username: senthil
+
+   tasks: 
+        - name: Displaying Variable
+          debug: 
+              msg: "{{ username  }}"
+     
+...     
+      
+
