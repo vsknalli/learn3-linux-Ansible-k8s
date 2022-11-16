@@ -41,8 +41,59 @@ To Do some action quickly and usally once we can go with ad-hoc for example to s
 # ansible node4 -m user -a "name=ansadmin state=present"
 # ansible node4 -m user -a "name=ansadmin state=present" --become
 
-Ansible Playbooks:
-==================
+Ansible Plays &  Playbooks:
+==========================
+	hosts 		--> To define target of play and other directives like remote_user, become, gather_facts..etc
+	vars 	        --> To define variables
+	tasks           --> To define list of tasks
+	handlers        --> To define some task to be executed on successful change due to some other task in tasks section
+	roles		--> Roles to be included in the play.
+
+Example-1 in YAML format:
+=========================
+--------------------------------------
+---
+ - hosts: node1 
+   become: True
+   tasks:
+        - name: Adding filrewall rule
+          firewalld:
+              port: 80/tcp
+              state: enabled
+              permanent: yes
+          notify: Reload_firewall
+    handlers:
+          - name: Reload_firewall
+            systemd:
+                name: firewalld
+                state: reloaded      
+-------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 
 
