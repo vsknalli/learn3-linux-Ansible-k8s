@@ -1,47 +1,84 @@
-1) Introduction:
-================
-	What is cloud computing?
-On-demand delivery of IT resources over the internet with pay-as-you-go pricing 
-Elasticity:
------------
-	You can grow or shring your resources whenver you want and how much ever you need.
+KUBERNETES CORE CONCEPTS:
+========================
+		Lets take  1000 feet about kubernetes cluster 
+Cargo Ship - > carrying all containers
+Control ship -> responsible for monitoring, and managing the cargo ships   .
 
-Cost Saving:
-------------
-	Grow and shring your resource as per your need, you also control over the cost.
+    Kubernetes cluster consists of set of nodes , which may be physical, or virtual ,on premise -> host applicaton in the form of containers
 
-Types of cloud Computing:
--------------------------
-	Infrastructure as a service (IaaS)
-	----------------------------------
-		Vitual machines with operating system is called Iaas , EC2 is an example
+    But somebody needs load the containers on the ship, not just load, plean how to load and where to load, identify the right ships , store 
+    information about the ships, monitor,track the location of containers on the ships,managing the whole loading process etc.This is done 
+    by control ship.
 
-	Platform as a service (PaaS)
-	----------------------------
-		Example if you want Oracle DB , you dont need to create virtual machine , just you can use AWS-RDS service and
-AWS will do everything for you to provision your Oracle Database, these type of service is called PaaS.
-		
-	Software as a service (SaaS)
-	----------------------------
-		Just subscribe and start using them ..much much easier..!!!..Google workspace is good example
+    Control ship --> Host different offices and departments
+	1) monitoring equipments
+	2) commumuation equipments
+	3) cranes for moving containers between ships , etc,etc
+
+There are many container are being loaded and unloaded from the ships on daily basis and so you need to maintain information about the different ships, what conatainers are in which ship and what time it was loaded ..etc...etc.All of these are stored in highly available key value
+store, khonw as ETCD. 
+
+When ships are arrves you load containers on them using cranes.The crenes identify the containers, that need to be placed on ships.It identifyies the right ships based on it size , its capacity, the number of containers already on the ship and any other conditions shuch as the 
+destination of the ship,the type of containers it allowed to carry ..etc....ete...so those are schedulers in kubernetes cluster. so A 
+scheduler identifies the right node to place a container on based on containers resource requirements, the worker node capacity or any other 
+policy and constrains such as taints and tolerations or node affinity rules that are on them.
+
+There are different offices:
+===========================
+	Operations Team  -> takes care of ship handling, traffic control,etc,they deal with issues related to dameges,
+	Cargo team       -> takes care of containers, when container are dameged or destroied they make sure new containers are made available	      services office  -> They takes care of the IT communications between different ships 
+	Controll Manager :
+		Node controller - Responsible for onboarding new node on cluster,handling situvation where node become unavailable
+		Replication controller -> ensure that the desired state of containers are running at all time in a replication group 	
+
+	                  -> How they communicate with each other , one office can reach other office  kube API server is the primary management component of kubernetes . Kube API server is reponsible for orchestrating all operation in the cluster .
+	OUR APPLICATIONS ARE IN THE FORM OF CONTAINERS,
+	THE DIFFERENT COMPONENTS THAT FORM THE ENTIRE MANAGEMENT SYSTEM ON THE MASTER NODE COULD BE HOSTED IN THE FORM OF CONTAINERS . 	
+	DNS SERVICE 
+	NETWRKING SERVICE SOLUTONS CAN BE DEPLOYED IN THE FORM OF CONTAINERS
+
+So we need softare that software can run and thats the container runtime engine. a popular one being Docker.
+
+So docker needs to be installed on all the nodes including on master node 
+
+Lets now turn our focus onto the cargo ship, Every ship has a captain, Captain is responsible for every activities on those ships, Here the 
+captin of the ship is kubelet in kubernetes.
+
+The kubelete is an agent that runs on each node in the cluster.it listens the instructions from kube-Api server and deployes and destroyes 
+containers on the node as required.
+
+
+KubeAPI-Server periodically fetches status report from the kubelet to monitor the status of the nodes and containers on them.
+
+Communicatoin between the worker nodes can be enabled by kubeproxy service .
 
 
 
-AWS Regions & Zones
-====================
-	AWS has its presence in so many contries, Which is called Regions , With in the Region AWS have multiple zones (DC)
-One Zone is multiple Datacenter, In a Region we have minimum two zones and maximum i have seen six zones.
-We can make hight availability through Multiple availablity zones.
-We can make disastor recovery between two regins
-28 -> Regions
-90 -> Availabity zones
-200  -> AWS providing more then 200 services. As per Nov-2022
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+    
 
 
 
