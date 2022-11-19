@@ -51,69 +51,57 @@ containers on the node as required.
 KubeAPI-Server periodically fetches status report from the kubelet to monitor the status of the nodes and containers on them.
 
 Communicatoin between the worker nodes can be enabled by kubeproxy service .
-ETCD Cluster:
-============
-        Nodes
-        Pods
-        Config
-        Secrets
-        Accounts
-        Roles
-        Bindings
-        Others
-When you run kube Control get command is from the ETCD server, Every Change you make your cluster such as adding additional nodes, deploying
-pods or replica sets are update in the ETCD server .
-        Only once its updted in the ETCD server is the change considered to be complete. 
-
-KUBE-API Server:
-================
-        Is the primary management component in kubernetes, 
-        When you run kubectl utillity, the kubectl utility is in fact reaching to the kubeapi server, the kubeapi server first authenticate 
-the request and validates it , then retrives the data from the etcd cluster and response back with the request information. 
-        When you run # kubectl create pod --> The request is authenticated first ane then validated, in this case apiserver creates pod object
-without assigning it to a node, updtes the information in the etcd server, and udpates the user that the pod has been created.
-        Scheduler contineously monitors the APIServer and realise that there is a new pod with no node assigned, and schedular identifies the 
-ritht node to place the new pod on and communicates that back to the   kube-API server . 
-        The API-Server then updates the information in the etcd - cluster, The apiserver then passes the information to kubelet in the 
-approperiate worker node, The kubelet then created the pod on the node and instruct the container runtime engine to deploy the application 
-images. Once done the kubelet updates the status back to the API-Server and API-Server then updates the data back in the etcd cluster.
-
-        Simillar pattern is followed every time a change is requested......!!
-
-KUBE-Api   server is the center of all different tasks.that needs to be performed to make a change in the cluster.
 
 
-KubeControlManager:
+EC2-Instance metadata-service & Dynamic data:
+=============================================
+	curl http://169.254.169.254/latest/meta-data  ---> display all configuration details - Metadata-service - data
+	curl http://169.254.169.254/latest/dynamic/instance-identity      --> Dynamic data
+	curl http://169.254.169.254/latest/dynamic/instance-identity/document
+Get dtails about our EC2 instances.
+
+Setting up HTTP SERVER :
+=======================
+# echo "Getting started with vsknalli Devops in Ansble_By..SenthilVeeranan" >/var/www/html/index.html 
+# echo "Getting started with vsknalli Devops in Ansble_By..$(whoami)" >/var/www/html/index.html 
+# echo "Getting started with vsknalli Devops in Ansble_By and in ..$(hostname)" >/var/www/html/index.html
+# curl http://169.254.169.254/latest/dynamic/instance-identity/document > /var/www/html/index.html
+# curl -s  http://169.254.169.254/latest/dynamic/instance-identity/document > /var/www/html/index.htm
+-s --> silence mode
+
+Security Group:
+===============
+	Virtual filewall which controls incomming/ourgoing traffic to/from AWS resources(EC2 instance , database,etc...etc)
+	We can assign multiple (upto-5) security Groups to our EC2 instances.
+	we can add and delted security group in any point in time(restart not required)
+	SeurityGroups are StateFull--> means-> if an outgoig request is allowd, incoming response for it is also automatically allowd.
+Elastic IP address:
 ==================
-        A controller is like an Office or department within the master Ship. 
-        A controller is a process that continuously monitors the state of varies components within the system and work towards bringing the 
-whole system to the desired functioning state.For example 
-        The node-controller:
-        --------------------> is reponsible for monitoring status of the nodes and takes necessary actions to keep the applicatoin running
-The node controller checks the status of the nodes every 5 secounds that way the node controller montor the health of the nodes.
- 
-        if it stops receving hearbeat from the node , and the node is marked as unreachable but it wait for 40 secounds before macking it 
-unreachable. After a node is marked unrachable it gives it five minutes to come back up .if it doesn't it removes the pods assigned to that 
-node provision them on the healthy ones if the pods are part of repliaset.
-
-        The Replication Controller:
-        ---------------------------> Its reposible for monitoring status of the replica-set and ensuring that the desired number of Pods are 
-available at the all the times within the set. If a pods dies it creates another one
-
-kube-scheduler:
-=============== -----------> is responsible for scheduling pods on nodes.Scheduler is Only Responsible for deciding which pod goes on which 
-node, It doesn't actually place the pod on the nodes. (Thats the job of kubelet], The scheduler only decides whih pod goes where.
+	Elastic IP address cab be switched to another EC2 instance within the same region.
+	Elastic IP address remains attached even if you stop the instance, You have to manually detached it.
+Remember: You are charged for Elastic IP address when you are not using it ..!!...Makesure that you explicitly release an IP when you are noteusing it.
 
 
+Simplify EC2 HTTP Server Setup:
+===============================
+	Userdata --> user data is nothing but simple script 
+	Bootstrapping  --> Boostrapping is nothing but installing OS patches or softwares when an EC2 instance is launched.
+-------------------------------
+#/bin/sh
+yum update -y 
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+curl -s  http://169.254.169.254/latest/dynamic/instance-identity/document > /var/www/html/index.htm	
+---------------------------------------
+Lookup -->   afther we launched the instance we see the user data like the blow
 
+" curl -s  http://169.254.169.254/latest/user-data "
 
-
-
-
-
-
-
-
-
-
+Launch Template:
+================
+	
+Reducing Launch Time with Customized AMI:
+=========================================
+	
 
