@@ -1,0 +1,27 @@
+###### LCX containers - Ansible clients ##############
+
+#[hgroup1]
+#10.95.219.188  ansible_user=ansadmin ansible_port=22
+#10.95.219.161   
+#10.95.219.122  
+#host1.example.com
+#webserver.example.com
+#db.example.com
+
+#[hgroup2]
+#webserver.example.com
+#db.example.com
+
+#[prod]
+#10.95.219.188 
+#10.95.219.161 
+#10.95.219.122 
+#10.95.219.239   
+#10.95.219.174  
+#10.95.219.95  
+
+[mygroup1]
+node[1:2]
+
+[mygroup2]
+node[3:4]

@@ -1,0 +1,16 @@
+---
+ - hosts: node1
+   become: True
+   tasks:
+        - name: Adding filrewall rule
+          firewalld:
+              port: 80/tcp
+              state: enabled
+              permanent: yes
+          notify: Reload_firewall
+   handlers:
+        - name: Reload_firewall
+          systemd:
+              name: firewalld
+              state: reloaded
+

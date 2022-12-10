@@ -1,0 +1,17 @@
+---
+ - hosts: node2
+   gather_facts: False 
+   vars:
+        list:
+              - item1
+              - item2
+              - item3
+
+   tasks: 
+        - name: Displaying Variable
+          debug: 
+              msg: "{{ list  }}"
+     
+...     
+      
+

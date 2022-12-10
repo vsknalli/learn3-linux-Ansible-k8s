@@ -1,0 +1,175 @@
+Ansible configurtion file:
+===========================
+-------------------------------------------------
+[defaults]
+inventory = /home/ansadmin/inventory
+roles_path = /home/ansadmin/tasks/roles
+remote_user = ansadmin
+
+[privilege_escalation]
+become = yes
+become_user = root
+become_method = sudo 
+become_ask_pass = False
+
+[ssh_connection]
+scp_if_ssh=True
+---------------------------------------------------------------------------------------------
+ANSIBLE MAN PAGE HELP
+======================
+# ansible-doc -l --> To list all modules available 
+# ansible-doc -l | grep ^win      --> to list all windows module
+# ansible-doc -l | grep -v ^win   --> To exculde windows module and show remaining modules
+# ansible-doc -l | grep -v ^win | grep ping --> show ping module
+# ansible-doc -l | grep -v ^win  | grep ^file --> strting with file it will list 
+# ansible-doc -l | grep ^file 
+# absible-doc -l | grep ^lvol  --> to configure lvm logical volume  
+
+kit and trail method
+
+# absible-doc -l | grep yum  
+# ansible-doc ping --> information about specific module with some examples
+# ansible-doc user  --> informatin about user module , like how to crete user with options
+------------------------------------------------------------------------------------------------
+Ansible ad-hoc command examples:
+---------------------------------
+To Do some action quickly and usally once we can go with ad-hoc for example to shutdown or restart remote hosts.
+
+# ansible node1 -m command -a "cat /etc/hosts"   
+# ansible node2 -m copy -a "src=/etc/hosts dest=/tmp/hosts_backup"
+# ansible node3 -m file -a "path=/tmp/test state=touch"
+# ansible node4 -m user -a "name=ansadmin state=present"
+# ansible node4 -m user -a "name=ansadmin state=present" --become
+
+Ansible Plays &  Playbooks:
+==========================
+	hosts 		--> To define target of play and other directives like remote_user, become, gather_facts..etc
+	vars 	        --> To define variables
+	tasks           --> To define list of tasks
+	handlers        --> To define some task to be executed on successful change due to some other task in tasks section
+	roles		--> Roles to be included in the play.
+
+Example-1 in YAML format:
+=========================
+--------------------------------------
+---
+ - hosts: node1 
+   become: True
+   tasks:
+        - name: Adding filrewall rule
+          firewalld:
+              port: 80/tcp
+              state: enabled
+              permanent: yes
+          notify: Reload_firewall
+    handlers:
+          - name: Reload_firewall
+            systemd:
+                name: firewalld
+                state: reloaded      
+-------------------------------------
+Named Dictionary Variables:
+---------------------------
+---
+ - hosts: node2
+   gather_facts: False 
+   vars:
+         dict:
+              key1: value1
+              key2: value2
+
+   tasks: 
+        - name: Displaying Variable
+          debug: 
+              msg: "{{ dict  }}"
+     
+...     
+-----------------------------------------
+
+Named List Variables:
+--------------------
+---
+ - hosts: node2
+   gather_facts: False 
+   vars:
+        list:
+              - item1
+              - item2
+              - item3
+
+   tasks: 
+        - name: Displaying Variable
+          debug: 
+              msg: "{{ list[0] }}"
+     
+...     
+------------------------------------
+Dictionary and List Variables:
+------------------------------
+lists from setup module only the dictionaries 
+
+ansible node1 -m setup | grep ansible_ | more
+
+ansible node1 -m setup | grep -a10 ansible_  --> 10 lines it will show after matches found
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

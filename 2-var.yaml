@@ -1,0 +1,13 @@
+---
+ - hosts: node2
+   vars:
+        key: value-senthiltesting
+
+   tasks: 
+        - name: Displaying Variable
+          debug: 
+              msg: "{{ key }}"
+     
+...     
+      
+
