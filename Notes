@@ -1,45 +1,15 @@
-1) Introduction:
-================
-	What is cloud computing?
-On-demand delivery of IT resources over the internet with pay-as-you-go pricing 
-Elasticity:
------------
-	You can grow or shring your resources whenver you want and how much ever you need.
+Introduction:
+============
+	What is continuouse integration and what problem does this solves ?
+Developer when they are working on prodect development ...CODE ,,BUILD,,TEST & PUSH 
+This is continuouse process.....This is happening many many times in a Day...!!! codes are get merged in Centralaized repository on regular
+basis.
 
-Cost Saving:
-------------
-	Grow and shring your resource as per your need, you also control over the cost.
+	Days pass...weeks pass...sometime even months pass......The code keep getting merged and then after some time the code together BUILD
+& tested it generated lot of bugs , issues and conflicts..etc
 
-Types of cloud Computing:
--------------------------
-	Infrastructure as a service (IaaS)
-	----------------------------------
-		Vitual machines with operating system is called Iaas , EC2 is an example
+	The problem occurs becsuse "THE CODE IS MERGED BUT NOT INTEGRATED" so code merged from long time When build through conflict, Bugs 
+and Errors .  All these conflicts, errors need to be resolved , which needs very long time that halts development.
 
-	Platform as a service (PaaS)
-	----------------------------
-		Example if you want Oracle DB , you dont need to create virtual machine , just you can use AWS-RDS service and
-AWS will do everything for you to provision your Oracle Database, these type of service is called PaaS.
-		
-	Software as a service (SaaS)
-	----------------------------
-		Just subscribe and start using them ..much much easier..!!!..Google workspace is good example
-
-
-
-AWS Regions & Zones
-====================
-	AWS has its presence in so many contries, Which is called Regions , With in the Region AWS have multiple zones (DC)
-One Zone is multiple Datacenter, In a Region we have minimum two zones and maximum i have seen six zones.
-We can make hight availability through Multiple availablity zones.
-We can make disastor recovery between two regins
-28 -> Regions
-90 -> Availabity zones
-200  -> AWS providing more then 200 services. As per Nov-2022
-
-Some very Known Services:
-------------------------
-	Amazon S3
-	EC2
-	Amazon EBS 
-	ECS
+	
+9dcf336b596b4e039ba36b87183cf7564701875a   jeknins --- sonar server tocken 
