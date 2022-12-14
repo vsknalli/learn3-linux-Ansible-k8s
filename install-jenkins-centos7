@@ -1,0 +1,14 @@
+#https://computingforgeeks.com/how-to-install-jenkins-server-stable-on-centos-7/
+#!/bin/bash
+sudo yum -y install epel-release
+sudo yum -y install java-11-openjdk
+java -versin
+java -version
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+yum -y install wget
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo yum -y install jenkins
+sudo systemctl start jenkins
+systemctl enable jenkins
+systemctl status jenkins
+
