@@ -1,5 +1,8 @@
 #https://computingforgeeks.com/how-to-install-jenkins-server-stable-on-centos-7/
 #!/bin/bash
+echo 
+echo "###########################"
+echo "intalling pereq"
 sudo yum -y install epel-release
 sudo yum -y install java-11-openjdk
 java -versin
