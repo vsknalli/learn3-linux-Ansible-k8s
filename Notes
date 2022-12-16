@@ -13,3 +13,9 @@ and Errors .  All these conflicts, errors need to be resolved , which needs very
 
 	
 9dcf336b596b4e039ba36b87183cf7564701875a   jeknins --- sonar server tocken 
+
+
+
+lxc snapshot utls-newsletter snap-04-jan-2019
+lxc info utls-newsletter
+lxc restore {container} {snapshot-name}
