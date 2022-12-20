@@ -1,0 +1,10 @@
+
+
+# yum install firewalld -y
+
+# firewall-cmd --zone=public --add-port=8080/tcp --permanent
+success
+# firewall-cmd --zone=public --add-service=http --permanent
+success
+# firewall-cmd --reload 
+
