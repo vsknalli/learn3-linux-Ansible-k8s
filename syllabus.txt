@@ -1,0 +1,200 @@
+Run_First_Jenkins_Job:
+======================
+GUI -> newitem -> name:Hello-world --> Free style JOb --> Build: Excute Shell "echo Hello how are you?" & uptime
+and validate and explain the console output .
+
+
+Integrate_Git_with_Jenkins [imview Build.jpg];
+================================================
+	Useally to pull code from github or any other source control system , our system sould have git 
+so we need to install git in jenkins then only it should possible 
+
+1) install git in jenkins server
+2) Install github plugin on Jenkins GUI -> manage jenkins -> manage plugins -> search -> github 
+3) Configure Git on Jenkins GUI -> manage jenkins -> Global Tool configuration -> git setup 
+
+
+Run_Jenkins_Job_to_Pull_Code_from_GitHub:
+========================================
+	Now we are going to create a new jenkins job, to pull the code from github 
+My code is available on github , my account is vsknalli & hello-world 
+
+Jenkins GUI -> new item -> name: pull-the-code-from-github -> Free Style OK 
+Description : Pull-the-code-from-github 
+Source Code Management:URL- https://github.com/vsknalli/hello-world.git
+Apply & save and BUILD the job...!!!
+
+
+Integrate_Maven_with_Jenkins:
+=============================
+* First thing we need to setup maven on jenkins server 
+	   google search maven download, copy tar.gz link address
+	   # cd /opt
+	   # wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
+           # tar -xvzf apache-maven-3.8.6-bin.tar.gz
+	   # mv apache-maven-3.8.6-bin.tar.gz maven 
+	   # cd maven -> below this directory we can see bin and conf directory & we need to update path variables 
+
+* Setup Environmental Variable, Maven is java based applictaion, thats the reason we need java, java is already install but we 
+  need to setup up home path JAVA_HOME along with M2 & M2_HOME, here M2&M2_HOME are mavan environmental varaiables.
+	  
+	  # vi ~/.bash_profile - we need to add JAVA_HOME and M2 and M2_HOME path:
+
+           -----------------------------------------------------------------
+           M2_HOME=/opt/maven/
+           M2=/opt/maven/bin
+           JAVA_HOME=/   -> # find / -name java-11* shows where our jvm exists
+           JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.17.0.8-2.el7_9.x86_64
+	   PATH=$PATH:$HOME/bin:$JAVA_HOME:$M2_HOME:$M2
+	   export PATH 
+	   # source .bash_profile
+           -------------------------------------------------------------------
+
+* We need to install maven plugin on jenkins GUI 
+	manage plugins -> availabe -> maven integration -> install with out restart
+
+* Configure Maven and Java on jenkins GUI 
+	manae jenkins -> global tool configuraion -> JDK and Maven path update 
+
+
+
+Build_a_Java_Project_Using_Jenkins:
+===================================
+	In pevious section we have seen how to integrate maven with jenkins, Now we need to create our build job so that we can build our 
+source code which is pulled from the GitHub, For that i am going to crete new job
+
+GUI -> newjob -> project name:First Maven project -> select "Maven Project" -> OK 
+Description: First Maven project -> source code : URL -> Build -> Goals : clean package ->  Applly & Save -> Build JOb Manually 
+
+ 
+
+
+Set_Up_a_Tomcat_Server:
+======================
+	* linux server
+	* Install java 
+	* configure tomcat
+	* Start tomcat server
+	* Access webUI on port 8080
+Install java: # sudo yum update && sudo yum install java-11-openjdk-devel 
+Configure tomcat: # cd /opt
+		  # wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.70/bin/apache-tomcat-9.0.70.tar.gz
+		  # tar -xvzf apache-tomcat-9.0.70.tar.gz
+	  	  # mv apache-tomcat-9.0.70.tar.gz tomcat 
+		  # cd maven/conf
+		  # /opt/tomcat/bin/startup.sh
+Now we can able to access tomcat in WebUI , if you click Manager App we will  get erro we need to do the following modifications
+Need to edit context.xml file and tomcat users.xml files
+		# cd /opt/tomcat/conf
+		# vi tomcat-users.xml
+		 <role rolename="manager-gui"/>
+ <role rolename="manager-script"/>
+ <role rolename="manager-jmx"/>
+ <role rolename="manager-status"/>
+ <user username="admin" password="admin" roles="manager-gui, manager-script, manager-jmx, manager-status"/>
+ <user username="deployer" password="deployer" roles="manager-script"/>
+ <user username="tomcat" password="s3cret" roles="manager-gui"/>
+
+
+wq!
+
+[root@tomcat conf]#  find / -name context.xml
+/opt/tomcat/webapps/host-manager/META-INF/context.xml
+/opt/tomcat/webapps/manager/META-INF/context.xml
+
+Comment these two lines like below in both two files
+--------------------------------------------------------------------
+<!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+         allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
+--------------------------------------------------------------------
+
+# tomcatdown
+# tomcatup .....Now we can able to access the "Managers App"
+
+
+
+
+Integrate_Tomcat_with_Jenkins:
+
+Deploy_Artifacts_on_a_Tomcat_Server:
+
+Automate_Build_and_Deploy_Using_Poll_SCM:
+
+Set_Up_Docker_Environment:
+
+Create_a_Tomcat_Container:
+
+Fixing_Tomcat_Container_Issue:
+
+--------------------------------------------------------
+Create_Your_First_Docker_File:
+
+Create_a_Customized_Dockerfile_for_Tomcat:
+
+Integrate_Docker_with_Jenkins:
+
+Jenkins_Job_to_Build_and_Copy_Artifacts_on_to_Docker_Host:
+
+Update_Tomcat_Dockerfile_to_Automate_Deployment_Process:
+
+Automate_Build_and_Deployment_on_Docker_Container:
+
+Jenkins_Job_to_Automate_CI_CD_to_Deploy_Application_on_Docker_Container:
+--------------------------------------------------------------------------
+Section_Introduction_Why_Ansible:
+
+Ansible_Installation:
+
+Integrate_Docker_with_Ansible:
+
+Integrate_Ansible_with_Jenkins:
+
+Build_an_Image_and_Create_Container_on_Ansible:
+
+Ansible_Playbook_to_Create_Image_and_Container:
+
+Copy_Image_on_to_DockerHub:
+
+Jenkins_Job_to_Build_an_Image_onto_Ansible:
+
+How_to_Create_Container_on_DockerHost_Using_Ansible_Playbook_-_DevOps_Project:
+
+Continuous_Deployment_of_Docker_Container_Using_Ansible_Playbook:
+
+Jenkins_CI_CD_to_Deploy_on_Container_Using_Ansible:
+
+
+
+Section_Introduction_Why_Kubernetes:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
