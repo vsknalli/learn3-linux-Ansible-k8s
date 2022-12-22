@@ -158,12 +158,122 @@ do some changes inthe code and push the code to GitHub ater that it will automat
 ----------------------------------------------------------------------------------------------------------------------
 
 Set_Up_Docker_Environment:
+=========================
+	In previouse section we have seen, How to build a jenins pipeline to build the code and deploy it on a vm or on a tomcat server. 
+	In this section we are going to seen , how we are going to deploy our code on docker container .
+Now setup the docker server in any virtual or cloud machines
 
-Create_a_Tomcat_Container:
+
+Create_a_Tomcat_Docker-Container:
+================================
+	we can pull the base tomcat-docker image from dockerHub and top of that one we do our own customaization with the 
+help of Dockerfile, Docker file contains instructions.
+
+We would like to deploy our application on tomcat container , so for that we need to download the docker iamge on our 
+local machine and we can build our application.
+# docker pull tomcat:latest    --> To pull the docker image from docker-hub
+# docker run -d --name tomcat-container -p  8080:8080 tomcat:latest -> To run the image as a running container 
+
+if i access IP:8080 getting the below error, i could able to access , but my requst is not reaching proberly .
+
+This is the Know issue in tomcat-9 version in docker image,  in the next sesstoin we will discusse the trouble shooting.
+
+
 
 Fixing_Tomcat_Container_Issue:
+==============================
+	Whenever we try to login to the webapp in browser it looks for webapp directory , but in this webapp directory no
+contents available , in this version it stored in webapp.dist directory , so we need to copy all from webapp.dist 
+directory to webapp directory and restart the docker service and try to access the URL . 
+	
+# docker exec -it tomcat-container bash
+# cd webapps
+# cp -R ../webapps
+Now it works we can able to access by URL IP:8080 
+whatever the changes which we have done on container won't effect on image, thats the reason when we build the docker images
+itselt we need to build the image to make it permanatly .
+	we are going to create a Dockerfile 
+	we will pull the tomcat image
+	we will do the customaization like copying the file from webapp.dist to webapp 
+	and creatr build the images 
+	if we create any container with is image we could able to access, we will seed the docker file creation in next sessioin.
+	
 
 Create_Your_First_Docker_File:
+==============================
+	How to write your first Dockerfile, we need to know some of the docker instructions like the below 
+
+	FROM            -> To pull the base image
+	RUN		-> To execute some commands
+	CMD		-> To provide defaults for an executing container (Like rc scripts)
+	ENTRYPOINT	-> To configure container that will run as an executable (Similar to CMD)
+	Bothe CMD and ENTRYPOINT Both are same execpt, CMD can be overwritten, ENTRYPOING can not overwritten 
+	WORKDIR		-> To sets workding directory (like cd command in unix)
+	COPY 		-> To copy from local to docker container 
+	ADD		-> To copy from local to docker container (equal to wget command)
+	EXPOSE 		-> informs docker that the container listens on specified network ports at runtime
+	ENV		-> To set the environment variable	
+
+Our requirement is install tomcat on centos Operating system
+
+INSTRUCTIONS:
+-------------
+	Pull centos from dockerhub			- FROM
+	Install java					- RUN 
+	Create /opt/tomcat directory			- RUN 
+	Change work directory to /opt/tomcat 		- WORKDIR 
+	Download tomcat packaes				- ADD/RUN 
+	Extract tar.gz file				- RUN 
+	Rename the tomcat directory			- RUN 
+	Tell to docker that it runs on port 8080	- EXPOSE 
+	Start tomcat service 				- CMD
+
+---------------------------------------------
+vi Dockerfile
+FROM centos:latest
+
+RUN cd /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+RUN yum install java -y 
+RUN mkdir /opt/tomcat 
+WORKDIR /opt/tomcat 
+ADD wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.70/bin/apache-tomcat-9.0.70.tar.gz .
+RUN tar -xvzf apache-tomcat-9.0.70.tar.gz 
+RUN mv apache-tomcat-9.0.70 /opt/tomcat 
+EXPOSE 8080
+CMD ["/opt/tomcat/catalina.sh", "run" ]
+
+wq!
+---------------------------------------------
+
+
+
+	
+
+
+
+
+		
+
+
+
+
+
+
+	
+	  	
+
+
+
+
+
+
+	
+		
+
+
 
 Create_a_Customized_Dockerfile_for_Tomcat:
 
