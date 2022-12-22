@@ -140,9 +140,22 @@ The Artifact will be save in Tomcat server /opt/tomcat/webapps -> directory
 
 Deploy_Artifacts_on_a_Tomcat_Server:
 ====================================
-	
+	Suppose developers working with some features , they want to udpate to their source code . as a developer we need to clone the 
+Helloworld code to our local system
+In your local machine # git clone <helloworld URL>
+we need to go to webapp/src/main/webapp - here we have index.jsp file -> we need to edit this file , search "Form filling html code" -copy 
+the code and # git status -> git commit -m "updated index.jsp file" and # git push orgin master 
+Now we need to manually Build the code ...The new code deployed to the tomcat server...check the URL looks new  
+
 
 Automate_Build_and_Deploy_Using_Poll_SCM:
+========================================
+	what we did the above will be done by pollSCM Automcatically jenkins identifies the changes in Github , jenkins pull the code and 
+deployed it on tomcat server 
+GUI - copy from previes job and change Build Triggers : "Pool SCM"
+do some changes inthe code and push the code to GitHub ater that it will automatically identified and deploy the code into tomcat server .
+
+----------------------------------------------------------------------------------------------------------------------
 
 Set_Up_Docker_Environment:
 
@@ -150,7 +163,6 @@ Create_a_Tomcat_Container:
 
 Fixing_Tomcat_Container_Issue:
 
---------------------------------------------------------
 Create_Your_First_Docker_File:
 
 Create_a_Customized_Dockerfile_for_Tomcat:
@@ -164,7 +176,7 @@ Update_Tomcat_Dockerfile_to_Automate_Deployment_Process:
 Automate_Build_and_Deployment_on_Docker_Container:
 
 Jenkins_Job_to_Automate_CI_CD_to_Deploy_Application_on_Docker_Container:
---------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
 Section_Introduction_Why_Ansible:
 
 Ansible_Installation:
@@ -187,38 +199,20 @@ Continuous_Deployment_of_Docker_Container_Using_Ansible_Playbook:
 
 Jenkins_CI_CD_to_Deploy_on_Container_Using_Ansible:
 
-
-
 Section_Introduction_Why_Kubernetes:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+----------------------------------------------------------------------------------------------------------
+Introduction_why-Kubernetes:
+Kubernetes-installation-methods:
+EKS_Installation_procedure:
+Run-Kubernetes-basic-commands:
+Create-First-manifeast-file
+Using-Lables-and-selectors:
+Write-a-deployment-file:
+use-Deployment-and-service-file-to-create-and-access-pod:
+Integrate-kubernetes-bootstrap-with-ansible:
+Create-Ansible-playbook-for-deply-and-service_files:
+Create-jenkins-deployment-for-kuberenetes
+CI-job-to-create-image-for-kubernetes
+Enable-rolling-update-to-create-pod-from-latest-doker_image:
+Comple CICD_and_Build and deployd-code-on-kubernetes:
+Clean-up-jenkins-set up 
