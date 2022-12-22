@@ -115,8 +115,32 @@ Comment these two lines like below in both two files
 
 
 Integrate_Tomcat_with_Jenkins:
+==============================
+	Fist thing we need to install plugin and need to install tomcat server, FOr tomcat we have plugin called deploy to container 
+	* Install "Deploy to Container"  	
+By using this plugin we can able to deploy on tomcat server next thing we need to configure tomcat server with credentials
+	* Configure tomcat server with credentials
+
+Lets jumb into jenkins server:
+Install "Deploy to container" GUI->Manage Jenkins-> Manage plugins -> Available -> search "Deploy to container" install with out reboot
+
+Now we need to configure tomcat with credentials:
+Manage jenkins -> Manage Credntials -> global > Add credentials -> Username with password "deployer" user and "deployer" password
+
+its time to create new job:
+GUI -> newjob -> Buildanddeploy-job -> maven ...ok 
+description: Help of maven deploy it on tomcat server -> git -> Build: clean install -> Post Bild Actions: (In this post build action where
+we are going to deploy our applicatoins after the build completes) -> Deploy war to container option -> provide the war file location , 
+its under worker space of jenkins server /var/lib/jenkins/workspace ) after the job path name we need to provide the path war/target/*.war or **/*.war 
+
+select container : tomcat-8 (Because tomcat-9 have some issue) -> Tomcat UEL need to  provide -> Apply and save and Build manaually .....!!
+
+The Artifact will be save in Tomcat server /opt/tomcat/webapps -> directory 
+
 
 Deploy_Artifacts_on_a_Tomcat_Server:
+====================================
+	
 
 Automate_Build_and_Deploy_Using_Poll_SCM:
 
