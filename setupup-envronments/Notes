@@ -1,0 +1,24 @@
+Jenkins popular Automation Tools:
+================================
+	* Bamboo
+	* CircleCI
+	* SolanoCI
+	* TeamCity
+
+Using jenkins we can automate any tasks..!!!!
+Jenkins is opensource 
+jenkis is written in java
+jenkins is collection of plugins 
+with the help of plugins we can extend the features of jenkins
+------------------------&---------------------------------------
+
+java-1.8.0-openjdk-devel  => which compine both runtime and compiler 
+# sudo yum install java-1.8.0-openjdk-devel -y
+# java -version
+# update-alternatives --config java 
+And start jenkins installation as per jenkins.io url instruction.
+
+-------------------------------------------------------------------
+
+
+
