@@ -195,7 +195,7 @@ itselt we need to build the image to make it permanatly .
 	we are going to create a Dockerfile 
 	we will pull the tomcat image
 	we will do the customaization like copying the file from webapp.dist to webapp 
-	and creatr build the images 
+	and create/build the images 
 	if we create any container with is image we could able to access, we will seed the docker file creation in next sessioin.
 	
 
@@ -229,7 +229,11 @@ INSTRUCTIONS:
 	Start tomcat service 				- CMD
 
 ---------------------------------------------
+
+
 vi Dockerfile
+
+
 FROM centos:latest
 
 RUN cd /etc/yum.repos.d/
@@ -237,47 +241,63 @@ RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
 RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 
 RUN yum install java -y 
-RUN mkdir /opt/tomcat 
-WORKDIR /opt/tomcat 
-ADD wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.70/bin/apache-tomcat-9.0.70.tar.gz .
+RUN mkdir /opt/tomcat
+WORKDIR /opt/tomcat
+ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.70/bin/apache-tomcat-9.0.70.tar.gz .
+# RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.70/bin/apache-tomcat-9.0.70.tar.gz .
 RUN tar -xvzf apache-tomcat-9.0.70.tar.gz 
-RUN mv apache-tomcat-9.0.70 /opt/tomcat 
+RUN mv apache-tomcat-9.0.70/*  /opt/tomcat
+
 EXPOSE 8080
-CMD ["/opt/tomcat/catalina.sh", "run" ]
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+
+
 
 wq!
 ---------------------------------------------
 
-
-
-	
-
-
-
-
-		
-
-
-
-
-
-
-	
-	  	
-
-
-
-
-
-
-	
-		
-
-
-
 Create_a_Customized_Dockerfile_for_Tomcat:
+===========================================
+
+Till now what we have done 
+Pulling the centos image and above the cetnos images we customised tomcat like downloading tomcat and moving the webapps.dist content to 
+webapps directory and creating the image ....and with the help of that customized image we have created the container ............instead
+
+we can directory download the tomcat image  ....we did already ...directly download the tomcat image also give 404 error ...To OverCome 
+this one what we can do is .....
+
+	Instead of pulling the centos directory we can download the tomcat image and customized the image will help us 
+
+vi Dockerfile
+FROM tomcat:latest
+RUN cp -R /usr/local/tomcat/webapps.dist/*  /usr/local/tomcat/webapps
+
+wq!
+
+From this above Docker file what we got ....customized tomcat image as per our requirement .
+Now the Docker file is ready , creating docker image 
+#  docker build -t tomcat-test .
+#  docker images
+#  docker ps -a
+
+Now we are going to create container with our customized image 
+
+#  docker run -d --name demo-tomcatcontainer -p 8081:8080 tomcat-test
+#  docker ps
+
+Access the URL
+
+
+
+
 
 Integrate_Docker_with_Jenkins:
+==============================
+	
+
+
+
+
 
 Jenkins_Job_to_Build_and_Copy_Artifacts_on_to_Docker_Host:
 
