@@ -1,3 +1,42 @@
+
+Server setup & Required Plugins and Configuration required in jenkins
+=====================================================================
+In Jenkins Server:
+------------------
+1) GitHub   - install in jenkisn server            --> GUI update the path path in global tool config
+2) Maven Integration  -- Apache Maven install in jenkins server --> GUI - update path details in  Global Tool config(M2_HOME, M2)
+3) JDK --> Install in server --> JAVA_HOME update the path
+
+In Tomcat server:
+-------------------
+1) Install java
+2) Install Tomcat - apache tomcat 9 below /opt and do some configuratoion like context.xml etc..etc...
+3) Deploy to container --> plugin helps to copy the artifact from jenkins server to Tomcat server -PLUGIN
+4) Jenkins communicate to the Tomcat server need to update the credentials in manage-jenkins-Manage credentials as a deployer user and passw
+
+Doker server:
+-------------
+1)First thing we need create deticated user like dokeradmin 
+#	useradd dockeradmin
+#	passwd dockeradmin
+# usermod -aG docker dockeradmin (dockerroot)
+#id dockeradmin	
+# su -dockeradmin
+# docker images--> where its working or not 
+
+2)secound thing "Publish Over ssh " plugin in Tomcat GUI --> plugin manaer -search ->Publish over ssh --> install without reboot
+3)Add docker host to jenkins , so that GUI->Manage Jenkins --> Configure system -> go to "publish over ssh" -> SSH Server add -> dockername and IPaddress
+->Test configuration is working or not . 
+
+
+
+Ansible Server:
+---------------
+
+
+
+
+
 Run_First_Jenkins_Job:
 ======================
 GUI -> newitem -> name:Hello-world --> Free style JOb --> Build: Excute Shell "echo Hello how are you?" & uptime
@@ -293,15 +332,70 @@ Access the URL
 
 Integrate_Docker_with_Jenkins:
 ==============================
+Doker server:
+-------------
+1)First thing we need create deticated user like dokeradmin 
+#	useradd dockeradmin
+#	passwd dockeradmin
+# usermod -aG docker dockeradmin (dockerroot)
+#id dockeradmin	
+# su -dockeradmin
+# docker images--> where its working or not 
+
+2)secound thing "Publish Over ssh " plugin in Tomcat GUI --> plugin manaer -search ->Publish over ssh --> install without reboot
+3)Add docker host to jenkins , so that GUI->Manage Jenkins --> Configure system -> go to "publish over ssh" -> SSH Server add -> dockername and IPaddress
+->Test configuration is working or not . 
+
 	
 
 
-
-
-
 Jenkins_Job_to_Build_and_Copy_Artifacts_on_to_Docker_Host:
+=========================================================
+	New Iteam-> Name: Build and deploy on container ->Copy from Buildandartifact Job -> ok
+Go to Post installation  -> cancelled "Deploy Ear/War on container" steps after that select "Sent Build Artifact over ssh"
+SSH server (DockerHost) --> Source file (webapp/target/*.war)-> Remove prefix (webapp/target) --> Remote directory --> ~Not required--
+
+Apply & save.
+
+
 
 Update_Tomcat_Dockerfile_to_Automate_Deployment_Process:
+=========================================================
+        In our docker /opt/docker owned by dockeradin:dockeradmin
+# chown -R dockeradmin:dockeradmin /opt/docker
+
+Becuser i  would like to copy the war file istead of home directory i want to copy /opt/docker directory
+Move the Dockerfile to /opt/docker
+Change the persimission of Dockerfile as well
+
+In the above same job chenge the Remote directory //opt//docker ...save and build it
+
+
+
+Now we need to  we need to create a container along with war file means artifact for that we need to
+
+go to the Job in GUI and post build step
+command exec add the below lines
+# cd /opt/docker
+# docker build -t senthil-image .
+# docker stop senthil-containerv1
+# docker rm senthil-containerv1
+
+# docker run -d --name senthil-containerv1 senthil-image
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Automate_Build_and_Deployment_on_Docker_Container:
 
