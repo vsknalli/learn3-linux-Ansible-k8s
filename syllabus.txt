@@ -1,0 +1,442 @@
+
+Server setup & Required Plugins and Configuration required in jenkins
+=====================================================================
+In Jenkins Server:
+------------------
+1) GitHub   - install in jenkisn server            --> GUI update the path path in global tool config
+2) Maven Integration  -- Apache Maven install in jenkins server --> GUI - update path details in  Global Tool config(M2_HOME, M2)
+3) JDK --> Install in server --> JAVA_HOME update the path
+
+In Tomcat server:
+-------------------
+1) Install java
+2) Install Tomcat - apache tomcat 9 below /opt and do some configuratoion like context.xml etc..etc...
+3) Deploy to container --> plugin helps to copy the artifact from jenkins server to Tomcat server -PLUGIN
+4) Jenkins communicate to the Tomcat server need to update the credentials in manage-jenkins-Manage credentials as a deployer user and passw
+
+Doker server:
+-------------
+1)First thing we need create deticated user like dokeradmin 
+#	useradd dockeradmin
+#	passwd dockeradmin
+# usermod -aG docker dockeradmin (dockerroot)
+#id dockeradmin	
+# su -dockeradmin
+# docker images--> where its working or not 
+
+2)secound thing "Publish Over ssh " plugin in Tomcat GUI --> plugin manaer -search ->Publish over ssh --> install without reboot
+3)Add docker host to jenkins , so that GUI->Manage Jenkins --> Configure system -> go to "publish over ssh" -> SSH Server add -> dockername and IPaddress
+->Test configuration is working or not . 
+
+
+
+Ansible Server:
+---------------
+
+
+
+
+
+Run_First_Jenkins_Job:
+======================
+GUI -> newitem -> name:Hello-world --> Free style JOb --> Build: Excute Shell "echo Hello how are you?" & uptime
+and validate and explain the console output .
+
+
+Integrate_Git_with_Jenkins [imview Build.jpg];
+================================================
+	Useally to pull code from github or any other source control system , our system sould have git 
+so we need to install git in jenkins then only it should possible 
+
+1) install git in jenkins server
+2) Install github plugin on Jenkins GUI -> manage jenkins -> manage plugins -> search -> github 
+3) Configure Git on Jenkins GUI -> manage jenkins -> Global Tool configuration -> git setup 
+
+
+Run_Jenkins_Job_to_Pull_Code_from_GitHub:
+========================================
+	Now we are going to create a new jenkins job, to pull the code from github 
+My code is available on github , my account is vsknalli & hello-world 
+
+Jenkins GUI -> new item -> name: pull-the-code-from-github -> Free Style OK 
+Description : Pull-the-code-from-github 
+Source Code Management:URL- https://github.com/vsknalli/hello-world.git
+Apply & save and BUILD the job...!!!
+
+
+Integrate_Maven_with_Jenkins:
+=============================
+* First thing we need to setup maven on jenkins server 
+	   google search maven download, copy tar.gz link address
+	   # cd /opt
+	   # wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
+           # tar -xvzf apache-maven-3.8.6-bin.tar.gz
+	   # mv apache-maven-3.8.6-bin.tar.gz maven 
+	   # cd maven -> below this directory we can see bin and conf directory & we need to update path variables 
+
+* Setup Environmental Variable, Maven is java based applictaion, thats the reason we need java, java is already install but we 
+  need to setup up home path JAVA_HOME along with M2 & M2_HOME, here M2&M2_HOME are mavan environmental varaiables.
+	  
+	  # vi ~/.bash_profile - we need to add JAVA_HOME and M2 and M2_HOME path:
+
+           -----------------------------------------------------------------
+           M2_HOME=/opt/maven/
+           M2=/opt/maven/bin
+           JAVA_HOME=/   -> # find / -name java-11* shows where our jvm exists
+           JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.17.0.8-2.el7_9.x86_64
+	   PATH=$PATH:$HOME/bin:$JAVA_HOME:$M2_HOME:$M2
+	   export PATH 
+	   # source .bash_profile
+           -------------------------------------------------------------------
+
+* We need to install maven plugin on jenkins GUI 
+	manage plugins -> availabe -> maven integration -> install with out restart
+
+* Configure Maven and Java on jenkins GUI 
+	manae jenkins -> global tool configuraion -> JDK and Maven path update 
+
+
+
+Build_a_Java_Project_Using_Jenkins:
+===================================
+	In pevious section we have seen how to integrate maven with jenkins, Now we need to create our build job so that we can build our 
+source code which is pulled from the GitHub, For that i am going to crete new job
+
+GUI -> newjob -> project name:First Maven project -> select "Maven Project" -> OK 
+Description: First Maven project -> source code : URL -> Build -> Goals : clean package ->  Applly & Save -> Build JOb Manually 
+
+ 
+
+
+Set_Up_a_Tomcat_Server:
+======================
+	* linux server
+	* Install java 
+	* configure tomcat
+	* Start tomcat server
+	* Access webUI on port 8080
+Install java: # sudo yum update && sudo yum install java-11-openjdk-devel 
+Configure tomcat: # cd /opt
+		  # wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.70/bin/apache-tomcat-9.0.70.tar.gz
+		  # tar -xvzf apache-tomcat-9.0.70.tar.gz
+	  	  # mv apache-tomcat-9.0.70.tar.gz tomcat 
+		  # cd maven/conf
+		  # /opt/tomcat/bin/startup.sh
+Now we can able to access tomcat in WebUI , if you click Manager App we will  get erro we need to do the following modifications
+Need to edit context.xml file and tomcat users.xml files
+		# cd /opt/tomcat/conf
+		# vi tomcat-users.xml
+		 <role rolename="manager-gui"/>
+ <role rolename="manager-script"/>
+ <role rolename="manager-jmx"/>
+ <role rolename="manager-status"/>
+ <user username="admin" password="admin" roles="manager-gui, manager-script, manager-jmx, manager-status"/>
+ <user username="deployer" password="deployer" roles="manager-script"/>
+ <user username="tomcat" password="s3cret" roles="manager-gui"/>
+
+
+wq!
+
+[root@tomcat conf]#  find / -name context.xml
+/opt/tomcat/webapps/host-manager/META-INF/context.xml
+/opt/tomcat/webapps/manager/META-INF/context.xml
+
+Comment these two lines like below in both two files
+--------------------------------------------------------------------
+<!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+         allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
+--------------------------------------------------------------------
+
+# tomcatdown
+# tomcatup .....Now we can able to access the "Managers App"
+
+
+
+
+Integrate_Tomcat_with_Jenkins:
+==============================
+	Fist thing we need to install plugin and need to install tomcat server, FOr tomcat we have plugin called deploy to container 
+	* Install "Deploy to Container"  	
+By using this plugin we can able to deploy on tomcat server next thing we need to configure tomcat server with credentials
+	* Configure tomcat server with credentials
+
+Lets jumb into jenkins server:
+Install "Deploy to container" GUI->Manage Jenkins-> Manage plugins -> Available -> search "Deploy to container" install with out reboot
+
+Now we need to configure tomcat with credentials:
+Manage jenkins -> Manage Credntials -> global > Add credentials -> Username with password "deployer" user and "deployer" password
+
+its time to create new job:
+GUI -> newjob -> Buildanddeploy-job -> maven ...ok 
+description: Help of maven deploy it on tomcat server -> git -> Build: clean install -> Post Bild Actions: (In this post build action where
+we are going to deploy our applicatoins after the build completes) -> Deploy war to container option -> provide the war file location , 
+its under worker space of jenkins server /var/lib/jenkins/workspace ) after the job path name we need to provide the path war/target/*.war or **/*.war 
+
+select container : tomcat-8 (Because tomcat-9 have some issue) -> Tomcat UEL need to  provide -> Apply and save and Build manaually .....!!
+
+The Artifact will be save in Tomcat server /opt/tomcat/webapps -> directory 
+
+
+Deploy_Artifacts_on_a_Tomcat_Server:
+====================================
+	Suppose developers working with some features , they want to udpate to their source code . as a developer we need to clone the 
+Helloworld code to our local system
+In your local machine # git clone <helloworld URL>
+we need to go to webapp/src/main/webapp - here we have index.jsp file -> we need to edit this file , search "Form filling html code" -copy 
+the code and # git status -> git commit -m "updated index.jsp file" and # git push orgin master 
+Now we need to manually Build the code ...The new code deployed to the tomcat server...check the URL looks new  
+
+
+Automate_Build_and_Deploy_Using_Poll_SCM:
+========================================
+	what we did the above will be done by pollSCM Automcatically jenkins identifies the changes in Github , jenkins pull the code and 
+deployed it on tomcat server 
+GUI - copy from previes job and change Build Triggers : "Pool SCM"
+do some changes inthe code and push the code to GitHub ater that it will automatically identified and deploy the code into tomcat server .
+
+----------------------------------------------------------------------------------------------------------------------
+
+Set_Up_Docker_Environment:
+=========================
+	In previouse section we have seen, How to build a jenins pipeline to build the code and deploy it on a vm or on a tomcat server. 
+	In this section we are going to seen , how we are going to deploy our code on docker container .
+Now setup the docker server in any virtual or cloud machines
+
+
+Create_a_Tomcat_Docker-Container:
+================================
+	we can pull the base tomcat-docker image from dockerHub and top of that one we do our own customaization with the 
+help of Dockerfile, Docker file contains instructions.
+
+We would like to deploy our application on tomcat container , so for that we need to download the docker iamge on our 
+local machine and we can build our application.
+# docker pull tomcat:latest    --> To pull the docker image from docker-hub
+# docker run -d --name tomcat-container -p  8080:8080 tomcat:latest -> To run the image as a running container 
+
+if i access IP:8080 getting the below error, i could able to access , but my requst is not reaching proberly .
+
+This is the Know issue in tomcat-9 version in docker image,  in the next sesstoin we will discusse the trouble shooting.
+
+
+
+Fixing_Tomcat_Container_Issue:
+==============================
+	Whenever we try to login to the webapp in browser it looks for webapp directory , but in this webapp directory no
+contents available , in this version it stored in webapp.dist directory , so we need to copy all from webapp.dist 
+directory to webapp directory and restart the docker service and try to access the URL . 
+	
+# docker exec -it tomcat-container bash
+# cd webapps
+# cp -R ../webapps
+Now it works we can able to access by URL IP:8080 
+whatever the changes which we have done on container won't effect on image, thats the reason when we build the docker images
+itselt we need to build the image to make it permanatly .
+	we are going to create a Dockerfile 
+	we will pull the tomcat image
+	we will do the customaization like copying the file from webapp.dist to webapp 
+	and create/build the images 
+	if we create any container with is image we could able to access, we will seed the docker file creation in next sessioin.
+	
+
+Create_Your_First_Docker_File:
+==============================
+	How to write your first Dockerfile, we need to know some of the docker instructions like the below 
+
+	FROM            -> To pull the base image
+	RUN		-> To execute some commands
+	CMD		-> To provide defaults for an executing container (Like rc scripts)
+	ENTRYPOINT	-> To configure container that will run as an executable (Similar to CMD)
+	Bothe CMD and ENTRYPOINT Both are same execpt, CMD can be overwritten, ENTRYPOING can not overwritten 
+	WORKDIR		-> To sets workding directory (like cd command in unix)
+	COPY 		-> To copy from local to docker container 
+	ADD		-> To copy from local to docker container (equal to wget command)
+	EXPOSE 		-> informs docker that the container listens on specified network ports at runtime
+	ENV		-> To set the environment variable	
+
+Our requirement is install tomcat on centos Operating system
+
+INSTRUCTIONS:
+-------------
+	Pull centos from dockerhub			- FROM
+	Install java					- RUN 
+	Create /opt/tomcat directory			- RUN 
+	Change work directory to /opt/tomcat 		- WORKDIR 
+	Download tomcat packaes				- ADD/RUN 
+	Extract tar.gz file				- RUN 
+	Rename the tomcat directory			- RUN 
+	Tell to docker that it runs on port 8080	- EXPOSE 
+	Start tomcat service 				- CMD
+
+---------------------------------------------
+
+
+vi Dockerfile
+
+
+FROM centos:latest
+
+RUN cd /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+RUN yum install java -y 
+RUN mkdir /opt/tomcat
+WORKDIR /opt/tomcat
+ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.70/bin/apache-tomcat-9.0.70.tar.gz .
+# RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.70/bin/apache-tomcat-9.0.70.tar.gz .
+RUN tar -xvzf apache-tomcat-9.0.70.tar.gz 
+RUN mv apache-tomcat-9.0.70/*  /opt/tomcat
+
+EXPOSE 8080
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+
+
+
+wq!
+---------------------------------------------
+
+Create_a_Customized_Dockerfile_for_Tomcat:
+===========================================
+
+Till now what we have done 
+Pulling the centos image and above the cetnos images we customised tomcat like downloading tomcat and moving the webapps.dist content to 
+webapps directory and creating the image ....and with the help of that customized image we have created the container ............instead
+
+we can directory download the tomcat image  ....we did already ...directly download the tomcat image also give 404 error ...To OverCome 
+this one what we can do is .....
+
+	Instead of pulling the centos directory we can download the tomcat image and customized the image will help us 
+
+vi Dockerfile
+FROM tomcat:latest
+RUN cp -R /usr/local/tomcat/webapps.dist/*  /usr/local/tomcat/webapps
+
+wq!
+
+From this above Docker file what we got ....customized tomcat image as per our requirement .
+Now the Docker file is ready , creating docker image 
+#  docker build -t tomcat-test .
+#  docker images
+#  docker ps -a
+
+Now we are going to create container with our customized image 
+
+#  docker run -d --name demo-tomcatcontainer -p 8081:8080 tomcat-test
+#  docker ps
+
+Access the URL
+
+
+
+
+
+Integrate_Docker_with_Jenkins:
+==============================
+Doker server:
+-------------
+1)First thing we need create deticated user like dokeradmin 
+#	useradd dockeradmin
+#	passwd dockeradmin
+# usermod -aG docker dockeradmin (dockerroot)
+#id dockeradmin	
+# su -dockeradmin
+# docker images--> where its working or not 
+
+2)secound thing "Publish Over ssh " plugin in Tomcat GUI --> plugin manaer -search ->Publish over ssh --> install without reboot
+3)Add docker host to jenkins , so that GUI->Manage Jenkins --> Configure system -> go to "publish over ssh" -> SSH Server add -> dockername and IPaddress
+->Test configuration is working or not . 
+
+	
+
+
+Jenkins_Job_to_Build_and_Copy_Artifacts_on_to_Docker_Host:
+=========================================================
+	New Iteam-> Name: Build and deploy on container ->Copy from Buildandartifact Job -> ok
+Go to Post installation  -> cancelled "Deploy Ear/War on container" steps after that select "Sent Build Artifact over ssh"
+SSH server (DockerHost) --> Source file (webapp/target/*.war)-> Remove prefix (webapp/target) --> Remote directory --> ~Not required--
+
+Apply & save.
+
+
+
+Update_Tomcat_Dockerfile_to_Automate_Deployment_Process:
+=========================================================
+        In our docker /opt/docker owned by dockeradin:dockeradmin
+# chown -R dockeradmin:dockeradmin /opt/docker
+
+Becuser i  would like to copy the war file istead of home directory i want to copy /opt/docker directory
+Move the Dockerfile to /opt/docker
+Change the persimission of Dockerfile as well
+
+In the above same job chenge the Remote directory //opt//docker ...save and build it
+
+
+
+Now we need to  we need to create a container along with war file means artifact for that we need to
+
+go to the Job in GUI and post build step
+command exec add the below lines
+# cd /opt/docker
+# docker build -t senthil-image .
+# docker stop senthil-containerv1
+# docker rm senthil-containerv1
+
+# docker run -d --name senthil-containerv1 senthil-image
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Automate_Build_and_Deployment_on_Docker_Container:
+
+Jenkins_Job_to_Automate_CI_CD_to_Deploy_Application_on_Docker_Container:
+--------------------------------------------------------------------------------------------------------------------------
+Section_Introduction_Why_Ansible:
+
+Ansible_Installation:
+
+Integrate_Docker_with_Ansible:
+
+Integrate_Ansible_with_Jenkins:
+
+Build_an_Image_and_Create_Container_on_Ansible:
+
+Ansible_Playbook_to_Create_Image_and_Container:
+
+Copy_Image_on_to_DockerHub:
+
+Jenkins_Job_to_Build_an_Image_onto_Ansible:
+
+How_to_Create_Container_on_DockerHost_Using_Ansible_Playbook_-_DevOps_Project:
+
+Continuous_Deployment_of_Docker_Container_Using_Ansible_Playbook:
+
+Jenkins_CI_CD_to_Deploy_on_Container_Using_Ansible:
+
+Section_Introduction_Why_Kubernetes:
+----------------------------------------------------------------------------------------------------------
+Introduction_why-Kubernetes:
+Kubernetes-installation-methods:
+EKS_Installation_procedure:
+Run-Kubernetes-basic-commands:
+Create-First-manifeast-file
+Using-Lables-and-selectors:
+Write-a-deployment-file:
+use-Deployment-and-service-file-to-create-and-access-pod:
+Integrate-kubernetes-bootstrap-with-ansible:
+Create-Ansible-playbook-for-deply-and-service_files:
+Create-jenkins-deployment-for-kuberenetes
+CI-job-to-create-image-for-kubernetes
+Enable-rolling-update-to-create-pod-from-latest-doker_image:
+Comple CICD_and_Build and deployd-code-on-kubernetes:
+Clean-up-jenkins-set up 
