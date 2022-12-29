@@ -29,10 +29,21 @@ Doker server:
 ->Test configuration is working or not . 
 
 
-
 Ansible Server:
 ---------------
+Integrate_Docker_with_Ansible:
+============================
 
+        In docker host create ansadmin
+        =========
+        add ansadmin
+        add ansadmin in sudoers file
+        Enabled passwd authentication in /etc/ssh/sshd_config file
+
+        In Ansible host
+        =========
+        We need to add docker host IP in host file
+        Copy ssh from ansible server to Docker server
 
 
 
@@ -385,18 +396,6 @@ command exec add the below lines
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 Automate_Build_and_Deployment_on_Docker_Container:
 
 Jenkins_Job_to_Automate_CI_CD_to_Deploy_Application_on_Docker_Container:
@@ -404,12 +403,78 @@ Jenkins_Job_to_Automate_CI_CD_to_Deploy_Application_on_Docker_Container:
 Section_Introduction_Why_Ansible:
 
 Ansible_Installation:
+=====================
+
+1) Setup the ansible server
+2) setup hostname
+3) Create ansadmin user
+   # useradd ansadmin
+   
+4) Add to sudoers file
+  # vi /etc/ssh/sshd_config 
+WITHOUT PASSWD 
+5) Generate SSh keys
+  # ssh-keygen 
+6) Enable password based login
+ vi /etc/ssh/sshd_config 
+PasswordAuthentication=yes
+systemctl reload sshd
+
+7) Install Ansible
+
 
 Integrate_Docker_with_Ansible:
+============================
+
+	In docker host create ansadmin
+        =========
+	add ansadmin
+        add ansadmin in sudoers file
+	Enabled passwd authentication in /etc/ssh/sshd_config file
+
+	In Ansible host 
+	=========
+	We need to add docker host IP in host file 
+	Copy ssh from ansible server to Docker server  
+
+
 
 Integrate_Ansible_with_Jenkins:
+==============================
+	we need to ansibel host like we have added docker host in configure system and provide ansadmin uesrname and password
+and test configuration 
+
+	copy the previous job senthil-first and create senthil-ansible as a job name and copied all config from the same job]
+in instead of source : docker server change as ansible server since ansible server configuraiton details andraady we have added
+source and remote directory all are same but we need to create remote directory in ansible-server sudo mkdir /opt/docker 
+and assign the permission to docker directory as ansadmin:ansadmin 
+After save and run the job manually ...its getting success .
+
+
 
 Build_an_Image_and_Create_Container_on_Ansible:
+==============================================
+We need to install docker in ansible server 
+# sudo yum install docker -y 
+
+After install successfully , we got docker group , we need to add our ansadmin user into docker group 
+#sudo  usermod -aG docker ansadmin
+# id ansadmin 
+
+Start docker service 
+# sudo systemctl start docker 
+
+copy the same Dockerfile from docker host to ansible host in the same directory /opt/docker
+----------------------
+FROM tomcat:latest
+RUN cp -R  /usr/local/tomcat/webapps.dist/*  /usr/local/tomcat/webapps
+COPY webapp/target/webapp.war /usr/local/tomcat/webapps
+---------------------
+
+
+
+
+
 
 Ansible_Playbook_to_Create_Image_and_Container:
 
