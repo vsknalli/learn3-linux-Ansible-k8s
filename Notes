@@ -16,7 +16,17 @@ To validate the lxd service from ubuntu20
 # lxc move file-server debian-wheezy  --> Now rename it
 # lxc start debian-wheezy 
 # lxc info debian-wheezy --> Verify it
-# 
+# lxc launch images:centos/8/amd64 cent8
+# lxc launch ubuntu:20.04 ubuntu20
+# lxc launch images:centos/7/amd64 test-container1
+
+#  lxc profile show default
+# lxc network list
+# lxc storage list
+# lxc list | grep -i stopped
+# lxc list | grep -i running 
+
+ 
 
 
 
