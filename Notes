@@ -45,31 +45,45 @@ Security,Identity&Compliance:
 18) IAM 
 19) Secrets Manager
 
+#######################################  EC2 Introduction  ################################
+
+EC2 provides web services API for provisioning, managing, and deprorvisioning virtual servers inside amazon cloud.
+
+We can easily scallup/Scall Down our resources in AWS.
+
+Ec2 pricing
+-----------
+1.On Demand
+2.Reserved
+3.Spot
+4.Deticated Host
+
+Components in EC2 service
+--------------------------
+1) AMI (Rededy made virtual machine)
+2) Instance Type (Which specifiyies the hardware of the host computer used for your instance CPU RAM NETWORK SPEED) 
+3) EBS ( Elastic Black Storage) EBS is virtual hard disk we can store OS ans also we can store our data
+4) Tag - Simple key:vlaue parirs to define name or project or customer like that or environment 
+5) Security Group - is basicall firewall for inbound and outbound 
+6) To login to the EC2 instance we need key pair like public or private keys 
+Creation of EC2 instance:
+-------------------------
+Choose an AMI -> Instacne Type -> Configuring the Instance -> Adding Storage -> Adding Tag -> Configure SG - Review.
+
+EC2 Quick start:
+---------------
+Slect Region -> NorthVirginia US-EAST-1 -> 
+Before we start creating the EC2 resource , we need to collect the information and create key:pair and create SG that is the 
+firewall and finally Launch the instance .
+
+Requirement Gathering:
+1) OS -> which AMI you need to decide depends upon the OS decicision
+2) Size -> RAM,CPU,Network ..etc
+3) Storage size -> 
+4) Project we are working on 
+5) Service/APP running 
+6) Environment 
+7) Login User/Owner 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
