@@ -1,11 +1,4 @@
 
-kube-scheduler:
-=============== -----------> is responsible for scheduling pods on nodes.Scheduler is Only Responsible for deciding which pod goes on which 
-node, It doesn't actually place the pod on the nodes. (Thats the job of kubelet], The scheduler only decides whih pod goes where.
-
-
-				  
-	
 EC2-Instance metadata-service & Dynamic data:
 =============================================
         curl http://169.254.169.254/latest/meta-data  ---> display all configuration details - Metadata-service - data
