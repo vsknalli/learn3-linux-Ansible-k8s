@@ -1,0 +1,75 @@
+
+REGION --> ZONE --> DATACENTER
+=============================
+
+ 	we are going to see the services are 
+Compute services:
+-----------------
+1) EC2
+2) Elastic Beanstack (Which is more related to devops)
+Storage services:
+----------------
+3) S3 
+4) EFS
+5) S3-Glacier
+
+Database services:
+------------------
+6) RDS
+7) Elastic cache 
+
+Migration and Transger:
+=======================
+8) Application Discovery Service 
+
+Networking Services:
+--------------------
+9) VPC 
+10) Cloud Front
+11) Route 53
+
+Develpoers Tools:
+----------------
+12) Codecommit
+13) CodeArtifact
+14) CodeBuild
+15) CodeDeploy
+16) Codepipeline
+
+Monitoring servics:
+------------------
+17) CouldWatch
+
+Security,Identity&Compliance:
+============================
+18) IAM 
+19) Secrets Manager
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
