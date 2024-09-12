@@ -1,0 +1,37 @@
+To validate the lxd service from ubuntu20 
+
+# systemctl status snap.lxd.daemon
+# systemctl enable/start/restart
+----------------------------------
+# lxc remote list  --> This is the location when we create new machine it will pull it from here.
+
+# lxc image list
+# lxc image list images:
+# lxc image list images:centos
+# lxc image list images:debian
+# lxc launch centos/7 kmaster 
+# lxc move {old-lxc-name} {new-lxc-name}    --> rename a local container
+
+# lxc stop file-server 
+# lxc move file-server debian-wheezy  --> Now rename it
+# lxc start debian-wheezy 
+# lxc info debian-wheezy --> Verify it
+# lxc launch images:centos/8/amd64 cent8
+# lxc launch ubuntu:20.04 ubuntu20
+# lxc launch images:centos/7/amd64 test-container1
+
+#  lxc profile show default
+# lxc network list
+# lxc storage list
+# lxc list | grep -i stopped
+# lxc list | grep -i running 
+
+ 
+
+
+
+
+
+
+
+
