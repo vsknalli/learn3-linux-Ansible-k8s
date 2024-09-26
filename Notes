@@ -1,0 +1,21 @@
+sIntroduction:
+============
+	What is continuouse integration and what problem does this solves ?
+Developer when they are working on prodect development ...CODE ,,BUILD,,TEST & PUSH 
+This is continuouse process.....This is happening many many times in a Day...!!! codes are get merged in Centralaized repository on regular
+basis.
+
+	Days pass...weeks pass...sometime even months pass......The code keep getting merged and then after some time the code together BUILD
+& tested it generated lot of bugs , issues and conflicts..etc
+
+	The problem occurs becsuse "THE CODE IS MERGED BUT NOT INTEGRATED" so code merged from long time When build through conflict, Bugs 
+and Errors .  All these conflicts, errors need to be resolved , which needs very long time that halts development.
+
+	
+9dcf336b596b4e039ba36b87183cf7564701875a   jeknins --- sonar server tocken 
+
+
+
+lxc snapshot utls-newsletter snap-04-jan-2019
+lxc info utls-newsletter
+lxc restore {container} {snapshot-name}
