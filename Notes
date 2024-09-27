@@ -1,0 +1,56 @@
+
+EC2-Instance metadata-service & Dynamic data:
+=============================================
+        curl http://169.254.169.254/latest/meta-data  ---> display all configuration details - Metadata-service - data
+        curl http://169.254.169.254/latest/dynamic/instance-identity      --> Dynamic data
+        curl http://169.254.169.254/latest/dynamic/instance-identity/document
+Get dtails about our EC2 instances.
+
+Setting up HTTP SERVER :
+=======================
+# echo "Getting started with vsknalli Devops in Ansble_By..SenthilVeeranan" >/var/www/html/index.html 
+# echo "Getting started with vsknalli Devops in Ansble_By..$(whoami)" >/var/www/html/index.html 
+# echo "Getting started with vsknalli Devops in Ansble_By and in ..$(hostname)" >/var/www/html/index.html
+# curl http://169.254.169.254/latest/dynamic/instance-identity/document > /var/www/html/index.html
+# curl -s  http://169.254.169.254/latest/dynamic/instance-identity/document > /var/www/html/index.htm
+-s --> silence mode
+
+Security Group:
+===============
+        Virtual filewall which controls incomming/ourgoing traffic to/from AWS resources(EC2 instance , database,etc...etc)
+        We can assign multiple (upto-5) security Groups to our EC2 instances.
+        we can add and delted security group in any point in time(restart not required)
+        SeurityGroups are StateFull--> means-> if an outgoig request is allowd, incoming response for it is also automatically allowd.
+Elastic IP address:
+==================
+        Elastic IP address cab be switched to another EC2 instance within the same region.
+        Elastic IP address remains attached even if you stop the instance, You have to manually detached it.
+Remember: You are charged for Elastic IP address when you are not using it ..!!...Makesure that you explicitly release an IP when you are noteusing it.
+
+
+Simplify EC2 HTTP Server Setup:
+===============================
+        Userdata --> user data is nothing but simple script 
+        Bootstrapping  --> Boostrapping is nothing but installing OS patches or softwares when an EC2 instance is launched.
+-------------------------------
+#/bin/sh
+yum update -y 
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+curl -s  http://169.254.169.254/latest/dynamic/instance-identity/document > /var/www/html/index.htm
+---------------------------------------
+Lookup -->   afther we launched the instance we see the user data like the blow
+
+" curl -s  http://169.254.169.254/latest/user-data "
+
+Launch Template:
+================
+
+Reducing Launch Time with Customized AMI:
+=========================================
+
+
+
+	
+
